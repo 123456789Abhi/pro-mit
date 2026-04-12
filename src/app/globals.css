@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* White-label brand hue — overridden per school via database */
+    --brand-hue: 217;
+  }
+
+  /* Scrollbar styling for dark theme */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(222, 47%, 6%);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(222, 30%, 25%);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(222, 30%, 35%);
+  }
+
+  /* Focus ring for accessibility */
+  *:focus-visible {
+    outline: 2px solid hsl(217, 91%, 60%);
+    outline-offset: 2px;
+  }
+
+  /* Disable pull-to-refresh on mobile (prevents accidental page reload) */
+  body {
+    overscroll-behavior-y: contain;
+  }
+}
+
+@layer components {
+  /* Loading skeleton base */
+  .skeleton {
+    @apply animate-skeleton rounded bg-surface-2;
+  }
+
+  /* Touch-friendly button base */
+  .btn-touch {
+    @apply min-h-touch min-w-touch;
+  }
+
+  /* Stat card used across all panels */
+  .stat-card {
+    @apply rounded-xl border border-border bg-surface-1 p-4;
+  }
+
+  /* Table row hover */
+  .table-row-hover {
+    @apply transition-colors hover:bg-surface-2/50;
+  }
+}

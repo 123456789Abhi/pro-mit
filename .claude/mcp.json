@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "transport": "http",
+      "url": "https://mcp.supabase.com/mcp?project_ref=czhrypodwcjyvfwsofit",
+      "env": {
+        "SUPABASE_URL": "https://czhrypodwcjyvfwsofit.supabase.co",
+        "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6aHJ5cG9kd2NqeXZmd3NvZml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NDQyMjAsImV4cCI6MjA5MTQyMDIyMH0.H6NigbZxnKYdkXnU410uy5r_f0d6GU5_Nt3t7XmaysE",
+        "SUPABASE_SERVICE_ROLE_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN6aHJ5cG9kd2NqeXZmd3NvZml0Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NTg0NDIyMCwiZXhwIjoyMDkxNDIwMjIwfQ.7iXOq_1sYQawXYK2wthXvC2Gl2mLp0FGiQajEZtoTRI"
+      }
+    }
+  }
+}
