@@ -1,0 +1,148 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: super-admin\accessibility\accessibility.spec.ts >> Accessibility - WCAG 2.1 AA >> 6.8 - Form inputs have associated labels
+- Location: tests\super-admin\accessibility\accessibility.spec.ts:107:7
+
+# Error details
+
+```
+TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+=========================== logs ===========================
+waiting for navigation until "load"
+  navigated to "http://localhost:3000/"
+  navigated to "http://localhost:3000/auth/login"
+  navigated to "http://localhost:3000/auth/login"
+============================================================
+```
+
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - img [ref=e6]
+      - heading "Lernen" [level=1] [ref=e9]
+      - paragraph [ref=e10]: Sign in to your admin panel
+    - generic [ref=e12]:
+      - generic [ref=e13]:
+        - text: Email address
+        - generic [ref=e14]:
+          - img
+          - textbox "Email address" [ref=e15]:
+            - /placeholder: you@example.com
+      - generic [ref=e16]:
+        - generic [ref=e17]:
+          - generic [ref=e18]: Password
+          - link "Forgot password?" [ref=e19] [cursor=pointer]:
+            - /url: /auth/reset-password
+        - generic [ref=e20]:
+          - img
+          - textbox "Password" [ref=e21]:
+            - /placeholder: ••••••••
+          - button "Show password" [ref=e22] [cursor=pointer]:
+            - img [ref=e23]
+      - button "Sign in" [ref=e26] [cursor=pointer]
+    - paragraph [ref=e27]: Powered by Lernen EdTech
+  - region "Notifications alt+T"
+  - alert [ref=e28]
+```
+
+# Test source
+
+```ts
+  1  | import { test as base, Page, BrowserContext, expect } from "@playwright/test";
+  2  | 
+  3  | // Extended fixtures for the test framework
+  4  | export interface TestFixtures {
+  5  |   authenticatedPage: Page;
+  6  |   superAdminPage: Page;
+  7  |   schoolIds: string[];
+  8  |   apiBaseUrl: string;
+  9  | }
+  10 | 
+  11 | // Auth helper for super admin
+  12 | export async function loginAsSuperAdmin(page: Page) {
+  13 |   await page.goto("/auth/login");
+  14 |   await page.fill('[name="email"]', process.env.TEST_SUPER_ADMIN_EMAIL || "admin@lernen.edu");
+  15 |   await page.fill('[name="password"]', process.env.TEST_SUPER_ADMIN_PASSWORD || "testpassword123");
+  16 |   await page.click('button[type="submit"]');
+> 17 |   await page.waitForURL(/\/super-admin/, { timeout: 15000 });
+     |              ^ TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+  18 | }
+  19 | 
+  20 | // Create test school data
+  21 | export function generateTestSchool(overrides: Partial<{
+  22 |   name: string;
+  23 |   board: string;
+  24 |   city: string;
+  25 |   region: string;
+  26 | }> = {}) {
+  27 |   const timestamp = Date.now();
+  28 |   return {
+  29 |     name: overrides.name || `Test School ${timestamp}`,
+  30 |     board: overrides.board || "CBSE",
+  31 |     city: overrides.city || "Mumbai",
+  32 |     region: overrides.region || "Maharashtra",
+  33 |     academic_year: "2026-2027",
+  34 |   };
+  35 | }
+  36 | 
+  37 | // Test data for 100 schools scale
+  38 | export const TEST_SCALE = {
+  39 |   schools: 100,
+  40 |   studentsPerSchool: 2000,
+  41 |   totalStudents: 200000,
+  42 |   teachersPerSchool: 8,
+  43 |   classesPerSchool: 6,
+  44 | };
+  45 | 
+  46 | // School status transitions
+  47 | export const SCHOOL_STATUSES = {
+  48 |   PENDING_ONBOARDING: "pending_onboarding",
+  49 |   TRIAL: "trial",
+  50 |   ACTIVE: "active",
+  51 |   EXPIRED: "expired",
+  52 |   DEACTIVATED: "deactivated",
+  53 | } as const;
+  54 | 
+  55 | // Permission levels for RBAC testing
+  56 | export const ROLES = {
+  57 |   SUPER_ADMIN: "super_admin",
+  58 |   SUPPORT_ADMIN: "support_admin",
+  59 |   VIEWER: "viewer",
+  60 |   PRINCIPAL: "principal",
+  61 |   TEACHER: "teacher",
+  62 |   STUDENT: "student",
+  63 | } as const;
+  64 | 
+  65 | // Common assertions
+  66 | export async function assertSchoolCardVisible(page: Page, schoolName: string) {
+  67 |   await expect(page.locator(`text=${schoolName}`).first()).toBeVisible();
+  68 | }
+  69 | 
+  70 | export async function assertNotification(page: Page, message: string) {
+  71 |   await expect(page.getByText(message)).toBeVisible({ timeout: 5000 });
+  72 | }
+  73 | 
+  74 | // Clean up helper
+  75 | export async function cleanupTestData(page: Page, schoolId: string) {
+  76 |   // Mark school as deactivated for cleanup
+  77 |   await page.request.post(`/api/admin/schools/${schoolId}/deactivate`);
+  78 | }
+  79 | 
+  80 | // Performance threshold helpers
+  81 | export function assertPerformance(metric: number, threshold: number, name: string) {
+  82 |   const ratio = metric / threshold;
+  83 |   if (ratio > 1) {
+  84 |     throw new Error(`${name} exceeded threshold: ${metric}ms > ${threshold}ms`);
+  85 |   }
+  86 | }
+  87 | 
+```

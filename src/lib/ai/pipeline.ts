@@ -170,9 +170,10 @@ export async function processAIRequest(
   // Inspired by AgentHarm: filter harmful queries before they reach AI
   const inputCheck = filterStudentQuery(input.query);
   if (!inputCheck.allowed) {
+    // severity is always "block" | "warn" when allowed=false
     throw new AIBlockedQueryError(
       inputCheck.reason ?? "This query cannot be processed.",
-      inputCheck.severity
+      inputCheck.severity === "allow" ? "block" : inputCheck.severity
     );
   }
 
@@ -517,5 +518,4 @@ export class AIBlockedQueryError extends Error {
     this.name = "AIBlockedQueryError";
     this.severity = severity;
   }
-}
 }
