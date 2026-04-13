@@ -56,6 +56,20 @@ import type {
   SystemHealthStatus,
   BackgroundJob,
 } from "@/lib/actions/super-admin/operations";
+import {
+  getSystemAlerts,
+  resolveAlert,
+  getImpersonationSessions,
+  endImpersonationSession,
+  getAuditLog,
+  exportAuditLog,
+  getAdminAccounts,
+  createAdminAccount,
+  updateAdminRole,
+  deactivateAdmin,
+  getSystemHealth,
+  getBackgroundJobs,
+} from "@/lib/actions/super-admin/operations";
 
 // ═══════════════════════════════════════════════════════
 // TYPE DEFINITIONS
@@ -174,374 +188,6 @@ const TABS: Tab[] = [
   { id: "health", label: "System Health", icon: <Server className="h-4 w-4" /> },
 ];
 
-// ═══════════════════════════════════════════════════════
-// MOCK DATA
-// ═══════════════════════════════════════════════════════
-
-function getMockAlerts(): AdminAlert[] {
-  return [
-    {
-      id: "1",
-      type: "ai_api_down",
-      severity: "critical",
-      title: "Gemini API Response Time Exceeded",
-      description: "Gemini API is responding with >10s latency. Affecting 234 student queries.",
-      created_at: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
-      resolved_at: null,
-      resolved_by: null,
-      resolution_note: null,
-      metadata: { affected_queries: 234, avg_latency_ms: 12500 },
-    },
-    {
-      id: "2",
-      type: "budget_warning",
-      severity: "medium",
-      title: "Monthly AI Budget at 80%",
-      description: "Gemini budget: ₹45,000/₹50,000 consumed this month.",
-      created_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-      resolved_at: null,
-      resolved_by: null,
-      resolution_note: null,
-      metadata: { budget: 50000, spent: 45000 },
-    },
-    {
-      id: "3",
-      type: "high_error_rate",
-      severity: "high",
-      title: "Quiz Generation Error Rate Spike",
-      description: "Quiz failure rate increased to 15% (threshold: 5%).",
-      created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-      resolved_at: null,
-      resolved_by: null,
-      resolution_note: null,
-      metadata: { error_rate: 0.15, threshold: 0.05 },
-    },
-    {
-      id: "4",
-      type: "suspicious_access",
-      severity: "critical",
-      title: "Multiple Failed Login Attempts",
-      description: "IP 192.168.1.1 attempted 15 failed logins in 5 minutes.",
-      created_at: new Date(Date.now() - 45 * 60 * 1000).toISOString(),
-      resolved_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-      resolved_by: "admin-1",
-      resolution_note: "IP blocked, user account locked",
-      metadata: { ip: "192.168.1.1", attempts: 15 },
-    },
-    {
-      id: "5",
-      type: "teacher_not_active",
-      severity: "medium",
-      title: "Teacher Inactive for 7 Days",
-      description: "Priya Sharma (Class 9-A Science) has not logged in for 7 days.",
-      created_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
-      resolved_at: null,
-      resolved_by: null,
-      resolution_note: null,
-      metadata: { teacher_id: "teacher-1", days_inactive: 7 },
-    },
-    {
-      id: "6",
-      type: "pregen_coverage_gap",
-      severity: "medium",
-      title: "Pre-generated Content Coverage Low",
-      description: "Class 10 Mathematics has only 45% pre-gen coverage. Target: 80%.",
-      created_at: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
-      resolved_at: null,
-      resolved_by: null,
-      resolution_note: null,
-      metadata: { class_id: "class-10-math", coverage: 0.45, target: 0.8 },
-    },
-    {
-      id: "7",
-      type: "content_processing_stalled",
-      severity: "high",
-      title: "Content Processing Queue Stuck",
-      description: "125 items stuck in processing queue for >1 hour.",
-      created_at: new Date(Date.now() - 90 * 60 * 1000).toISOString(),
-      resolved_at: null,
-      resolved_by: null,
-      resolution_note: null,
-      metadata: { queue_size: 125, stuck_time_minutes: 65 },
-    },
-    {
-      id: "8",
-      type: "new_admin_created",
-      severity: "low",
-      title: "New Admin Account Created",
-      description: "New support admin 'Rahul Kumar' created by Super Admin.",
-      created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-      resolved_at: new Date(Date.now() - 23 * 60 * 60 * 1000).toISOString(),
-      resolved_by: "admin-1",
-      resolution_note: "Verified - onboarding completed",
-      metadata: { admin_name: "Rahul Kumar", created_by: "admin-1" },
-    },
-    {
-      id: "9",
-      type: "school_expired",
-      severity: "high",
-      title: "School Subscription Expired",
-      description: "Delhi Public School subscription expired 2 days ago.",
-      created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-      resolved_at: null,
-      resolved_by: null,
-      resolution_note: null,
-      metadata: { school_id: "school-5", days_expired: 2 },
-    },
-    {
-      id: "10",
-      type: "low_engagement",
-      severity: "medium",
-      title: "Low Student Engagement",
-      description: "Class 8 students averaging only 2 questions/day (target: 10).",
-      created_at: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
-      resolved_at: null,
-      resolved_by: null,
-      resolution_note: null,
-      metadata: { class_id: "class-8", avg_questions: 2, target: 10 },
-    },
-  ];
-}
-
-function getMockImpersonationSessions(): ImpersonationSession[] {
-  return [
-    {
-      id: "1",
-      admin_id: "admin-1",
-      admin_name: "Abhishek Kumar",
-      admin_email: "abhi@lernen.com",
-      target_school_id: "school-1",
-      target_school_name: "Oakridge International School",
-      target_user_id: "principal-1",
-      target_user_name: "Ramaprashad Bhattacharya",
-      target_user_role: "principal",
-      started_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
-      ended_at: null,
-      ip_address: "192.168.1.100",
-      actions_performed: [
-        { timestamp: new Date(Date.now() - 25 * 60 * 1000).toISOString(), action_type: "VIEW_DASHBOARD", details: { route: "/principal/dashboard" } },
-        { timestamp: new Date(Date.now() - 20 * 60 * 1000).toISOString(), action_type: "VIEW_STUDENTS", details: { class: "10A", count: 45 } },
-        { timestamp: new Date(Date.now() - 15 * 60 * 1000).toISOString(), action_type: "EXPORT_REPORT", details: { report_type: "engagement" } },
-      ],
-      is_active: true,
-    },
-    {
-      id: "2",
-      admin_id: "admin-2",
-      admin_name: "Sneha Patel",
-      admin_email: "sneha@lernen.com",
-      target_school_id: "school-2",
-      target_school_name: "Delhi Public School",
-      target_user_id: "teacher-5",
-      target_user_name: "Meera Kapoor",
-      target_user_role: "teacher",
-      started_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-      ended_at: new Date(Date.now() - 90 * 60 * 1000).toISOString(),
-      ip_address: "10.0.0.50",
-      actions_performed: [
-        { timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), action_type: "VIEW_CLASSES", details: {} },
-        { timestamp: new Date(Date.now() - 110 * 60 * 1000).toISOString(), action_type: "GENERATE_QUIZ", details: { subject: "Mathematics" } },
-      ],
-      is_active: false,
-    },
-    {
-      id: "3",
-      admin_id: "admin-1",
-      admin_name: "Abhishek Kumar",
-      admin_email: "abhi@lernen.com",
-      target_school_id: "school-3",
-      target_school_name: "St. Mary's School",
-      target_user_id: "principal-3",
-      target_user_name: "Fr. George Thomas",
-      target_user_role: "principal",
-      started_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-      ended_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000 + 45 * 60 * 1000).toISOString(),
-      ip_address: "192.168.1.100",
-      actions_performed: [
-        { timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), action_type: "TROUBLESHOOT_ISSUE", details: { issue_type: "login_problem" } },
-      ],
-      is_active: false,
-    },
-  ];
-}
-
-function getMockAuditLog(): AuditLogEntry[] {
-  return [
-    {
-      id: "1",
-      actor_id: "admin-1",
-      actor_name: "Abhishek Kumar",
-      actor_email: "abhi@lernen.com",
-      action: "CREATE_SCHOOL",
-      resource_type: "schools",
-      resource_id: "school-10",
-      changes: { name: "New Genesis School", board: "CBSE" },
-      ip_address: "192.168.1.100",
-      created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-      id: "2",
-      actor_id: "admin-1",
-      actor_name: "Abhishek Kumar",
-      actor_email: "abhi@lernen.com",
-      action: "UPDATE_PRICING",
-      resource_type: "school_pricing",
-      resource_id: "school-5",
-      changes: { from: { monthly_per_student: 150 }, to: { monthly_per_student: 175 } },
-      ip_address: "192.168.1.100",
-      created_at: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-      id: "3",
-      actor_id: "admin-2",
-      actor_name: "Sneha Patel",
-      actor_email: "sneha@lernen.com",
-      action: "CREATE_ADMIN",
-      resource_type: "users",
-      resource_id: "admin-5",
-      changes: { name: "Rahul Kumar", email: "rahul@lernen.com", role: "support_admin" },
-      ip_address: "10.0.0.50",
-      created_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-      id: "4",
-      actor_id: "admin-1",
-      actor_name: "Abhishek Kumar",
-      actor_email: "abhi@lernen.com",
-      action: "SEND_NOTIFICATION",
-      resource_type: "notifications",
-      resource_id: "notif-100",
-      changes: { title: "Maintenance Notice", recipient_count: 5000 },
-      ip_address: "192.168.1.100",
-      created_at: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-      id: "5",
-      actor_id: "admin-3",
-      actor_name: "Vikram Singh",
-      actor_email: "vikram@lernen.com",
-      action: "UPDATE_ADMIN_ROLE",
-      resource_type: "users",
-      resource_id: "admin-2",
-      changes: { from_role: "viewer", to_role: "support_admin" },
-      ip_address: "172.16.0.25",
-      created_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-      id: "6",
-      actor_id: "admin-1",
-      actor_name: "Abhishek Kumar",
-      actor_email: "abhi@lernen.com",
-      action: "FREEZE_SCHOOL",
-      resource_type: "schools",
-      resource_id: "school-8",
-      changes: { reason: "Payment overdue >30 days" },
-      ip_address: "192.168.1.100",
-      created_at: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-      id: "7",
-      actor_id: "admin-1",
-      actor_name: "Abhishek Kumar",
-      actor_email: "abhi@lernen.com",
-      action: "BULK_IMPORT",
-      resource_type: "students",
-      resource_id: null,
-      changes: { count: 150, school_id: "school-3", file: "students_batch_2026.csv" },
-      ip_address: "192.168.1.100",
-      created_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-      id: "8",
-      actor_id: "admin-2",
-      actor_name: "Sneha Patel",
-      actor_email: "sneha@lernen.com",
-      action: "EXPORT_DATA",
-      resource_type: "audit_log",
-      resource_id: null,
-      changes: { format: "csv", date_range: "2026-01-01 to 2026-03-31" },
-      ip_address: "10.0.0.50",
-      created_at: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
-    },
-  ];
-}
-
-function getMockAdmins(): AdminAccount[] {
-  return [
-    {
-      id: "admin-1",
-      name: "Abhishek Kumar",
-      email: "abhi@lernen.com",
-      role: "super_admin",
-      last_login_at: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
-      is_active: true,
-      created_at: "2024-01-15T10:00:00Z",
-      created_by: null,
-    },
-    {
-      id: "admin-2",
-      name: "Sneha Patel",
-      email: "sneha@lernen.com",
-      role: "support_admin",
-      last_login_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-      is_active: true,
-      created_at: "2024-03-20T14:30:00Z",
-      created_by: "admin-1",
-    },
-    {
-      id: "admin-3",
-      name: "Vikram Singh",
-      email: "vikram@lernen.com",
-      role: "viewer",
-      last_login_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-      is_active: true,
-      created_at: "2024-06-10T09:15:00Z",
-      created_by: "admin-1",
-    },
-    {
-      id: "admin-4",
-      name: "Priya Sharma",
-      email: "priya@lernen.com",
-      role: "support_admin",
-      last_login_at: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-      is_active: true,
-      created_at: "2024-08-05T11:45:00Z",
-      created_by: "admin-1",
-    },
-    {
-      id: "admin-5",
-      name: "Rahul Kumar",
-      email: "rahul@lernen.com",
-      role: "viewer",
-      last_login_at: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
-      is_active: false,
-      created_at: "2025-01-20T16:00:00Z",
-      created_by: "admin-2",
-    },
-  ];
-}
-
-function getMockSystemHealth(): SystemHealthStatus[] {
-  return [
-    { service: "Supabase Database", status: "healthy", response_time_ms: 23, last_check: new Date().toISOString(), error_message: null },
-    { service: "Supabase Auth", status: "healthy", response_time_ms: 45, last_check: new Date().toISOString(), error_message: null },
-    { service: "Supabase Storage", status: "healthy", response_time_ms: 67, last_check: new Date().toISOString(), error_message: null },
-    { service: "Vercel Edge Functions", status: "healthy", response_time_ms: 120, last_check: new Date().toISOString(), error_message: null },
-    { service: "Gemini API", status: "degraded", response_time_ms: 3500, last_check: new Date().toISOString(), error_message: "High latency detected" },
-    { service: "Claude API", status: "healthy", response_time_ms: 890, last_check: new Date().toISOString(), error_message: null },
-    { service: "OpenAI Embeddings", status: "healthy", response_time_ms: 234, last_check: new Date().toISOString(), error_message: null },
-  ];
-}
-
-function getMockBackgroundJobs(): BackgroundJob[] {
-  return [
-    { id: "1", name: "Alert Generation", description: "Generates system alerts every 5 minutes", schedule: "*/5 * * * *", last_run: new Date(Date.now() - 3 * 60 * 1000).toISOString(), next_run: new Date(Date.now() + 2 * 60 * 1000).toISOString(), status: "completed", last_duration_seconds: 12, error_message: null },
-    { id: "2", name: "Daily Metrics Computation", description: "Computes daily school metrics at midnight IST", schedule: "0 0 * * *", last_run: new Date(Date.now() - 14 * 60 * 60 * 1000).toISOString(), next_run: new Date(Date.now() + 10 * 60 * 60 * 1000).toISOString(), status: "completed", last_duration_seconds: 45, error_message: null },
-    { id: "3", name: "Monthly Costs Computation", description: "Computes monthly AI costs on the 1st of each month", schedule: "0 1 1 * *", last_run: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(), next_run: new Date(Date.now() + 20 * 24 * 60 * 60 * 1000).toISOString(), status: "completed", last_duration_seconds: 120, error_message: null },
-    { id: "4", name: "Content Pre-generation", description: "Processes content pre-generation queue continuously", schedule: "Continuous", last_run: new Date(Date.now() - 30 * 1000).toISOString(), next_run: new Date(Date.now() + 30 * 1000).toISOString(), status: "running", last_duration_seconds: null, error_message: null },
-    { id: "5", name: "Scheduled Notifications", description: "Sends scheduled notifications every minute", schedule: "*/1 * * * *", last_run: new Date(Date.now() - 45 * 1000).toISOString(), next_run: new Date(Date.now() + 15 * 1000).toISOString(), status: "completed", last_duration_seconds: 3, error_message: null },
-  ];
-}
 
 // ═══════════════════════════════════════════════════════
 // COMPONENTS
@@ -614,10 +260,15 @@ function AlertsTab() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    // Load mock data
-    const mockAlerts = getMockAlerts();
-    setAlerts(mockAlerts);
-    setLoading(false);
+    async function load() {
+      setLoading(true);
+      const result = await getSystemAlerts({ pageSize: 50 });
+      if (result.success && result.data) {
+        setAlerts(result.data.alerts);
+      }
+      setLoading(false);
+    }
+    load();
   }, []);
 
   const filteredAlerts = alerts.filter((alert) => {
@@ -634,22 +285,25 @@ function AlertsTab() {
     if (!selectedAlert || !resolveNote.trim()) {return;}
     setSubmitting(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    const result = await resolveAlert({ alertId: selectedAlert.id, resolutionNote: resolveNote });
 
-    setAlerts((prev) =>
-      prev.map((a) =>
-        a.id === selectedAlert.id
-          ? { ...a, resolved_at: new Date().toISOString(), resolution_note: resolveNote }
-          : a
-      )
-    );
+    if (result.success) {
+      setAlerts((prev) =>
+        prev.map((a) =>
+          a.id === selectedAlert.id
+            ? { ...a, resolved_at: new Date().toISOString(), resolution_note: resolveNote }
+            : a
+        )
+      );
+      setShowResolveDialog(false);
+      setSelectedAlert(null);
+      setResolveNote("");
+      toast.success("Alert resolved successfully");
+    } else {
+      toast.error(result.error || "Failed to resolve alert");
+    }
 
-    setShowResolveDialog(false);
-    setSelectedAlert(null);
-    setResolveNote("");
     setSubmitting(false);
-    toast.success("Alert resolved successfully");
   };
 
   if (loading) {
@@ -728,7 +382,9 @@ function AlertsTab() {
             <p className="font-medium text-danger">Critical Alert{criticalCount > 1 ? "s" : ""} Active</p>
             <p className="text-sm text-text-secondary">{criticalCount} critical alert{criticalCount > 1 ? "s" : ""} require{criticalCount === 1 ? "s" : ""} immediate attention</p>
           </div>
-          <button className="btn-touch rounded-lg bg-danger px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-danger/80">
+          <button
+            className="btn-touch rounded-lg bg-danger px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-danger/80"
+          >
             View Now
           </button>
         </div>
@@ -847,9 +503,15 @@ function ImpersonationTab() {
   const [showTimeline, setShowTimeline] = useState(false);
 
   useEffect(() => {
-    const mockSessions = getMockImpersonationSessions();
-    setSessions(mockSessions);
-    setLoading(false);
+    async function load() {
+      setLoading(true);
+      const result = await getImpersonationSessions({ pageSize: 50 });
+      if (result.success && result.data) {
+        setSessions(result.data.sessions);
+      }
+      setLoading(false);
+    }
+    load();
   }, []);
 
   const filteredSessions = activeOnly ? sessions.filter((s) => s.is_active) : sessions;
@@ -858,12 +520,17 @@ function ImpersonationTab() {
   const handleEndSession = async (sessionId: string) => {
     if (!confirm("Are you sure you want to end this impersonation session?")) {return;}
 
-    setSessions((prev) =>
-      prev.map((s) =>
-        s.id === sessionId ? { ...s, is_active: false, ended_at: new Date().toISOString() } : s
-      )
-    );
-    toast.success("Session ended successfully");
+    const result = await endImpersonationSession({ sessionId });
+    if (result.success) {
+      setSessions((prev) =>
+        prev.map((s) =>
+          s.id === sessionId ? { ...s, is_active: false, ended_at: new Date().toISOString() } : s
+        )
+      );
+      toast.success("Session ended successfully");
+    } else {
+      toast.error(result.error || "Failed to end session");
+    }
   };
 
   const getDuration = (started: string, ended: string | null) => {
@@ -1094,9 +761,15 @@ function AuditLogTab() {
   const [showDiff, setShowDiff] = useState(false);
 
   useEffect(() => {
-    const mockEntries = getMockAuditLog();
-    setEntries(mockEntries);
-    setLoading(false);
+    async function load() {
+      setLoading(true);
+      const result = await getAuditLog({ pageSize: 100 });
+      if (result.success && result.data) {
+        setEntries(result.data.entries);
+      }
+      setLoading(false);
+    }
+    load();
   }, []);
 
   const actionTypes = [...new Set(entries.map((e) => e.action))];
@@ -1284,45 +957,74 @@ function AdminsTab() {
   const [selectedAdmin, setSelectedAdmin] = useState<AdminAccount | null>(null);
   const [newRole, setNewRole] = useState<AdminRole>("viewer");
   const [showActivityDialog, setShowActivityDialog] = useState(false);
+  const [entries, setEntries] = useState<AuditLogEntry[]>([]);
 
   useEffect(() => {
-    const mockAdmins = getMockAdmins();
-    setAdmins(mockAdmins);
-    setLoading(false);
+    async function load() {
+      setLoading(true);
+      const result = await getAdminAccounts();
+      if (result.success && result.data) {
+        setAdmins(result.data.admins);
+      }
+      setLoading(false);
+    }
+    load();
   }, []);
+
+  // Load audit log entries when activity dialog opens
+  useEffect(() => {
+    if (showActivityDialog) {
+      getAuditLog({ pageSize: 100 }).then((result) => {
+        if (result.success && result.data?.entries) {
+          setEntries(result.data.entries);
+        }
+      });
+    }
+  }, [showActivityDialog]);
 
   const activeAdmins = admins.filter((a) => a.is_active).length;
 
   const handleCreateAdmin = async (data: { name: string; email: string; role: AdminRole }) => {
-    const newAdmin: AdminAccount = {
-      id: `admin-${Date.now()}`,
-      ...data,
-      last_login_at: null,
-      is_active: true,
-      created_at: new Date().toISOString(),
-      created_by: "admin-1",
-    };
-    setAdmins((prev) => [...prev, newAdmin]);
-    setShowCreateDialog(false);
-    toast.success(`Admin ${data.name} created successfully`);
+    const result = await createAdminAccount(data);
+    if (result.success) {
+      // Refresh the list
+      const refresh = await getAdminAccounts();
+      if (refresh.success && refresh.data) {
+        setAdmins(refresh.data.admins);
+      }
+      setShowCreateDialog(false);
+      toast.success(`Admin ${data.name} created successfully`);
+    } else {
+      toast.error(result.error || "Failed to create admin");
+    }
   };
 
   const handleUpdateRole = async () => {
     if (!selectedAdmin) {return;}
-    setAdmins((prev) =>
-      prev.map((a) => (a.id === selectedAdmin.id ? { ...a, role: newRole } : a))
-    );
-    setShowRoleDialog(false);
-    setSelectedAdmin(null);
-    toast.success("Role updated successfully");
+    const result = await updateAdminRole({ adminId: selectedAdmin.id, newRole });
+    if (result.success) {
+      setAdmins((prev) =>
+        prev.map((a) => (a.id === selectedAdmin.id ? { ...a, role: newRole } : a))
+      );
+      setShowRoleDialog(false);
+      setSelectedAdmin(null);
+      toast.success("Role updated successfully");
+    } else {
+      toast.error(result.error || "Failed to update role");
+    }
   };
 
   const handleDeactivate = async (adminId: string) => {
     if (!confirm("Are you sure you want to deactivate this admin?")) {return;}
-    setAdmins((prev) =>
-      prev.map((a) => (a.id === adminId ? { ...a, is_active: false } : a))
-    );
-    toast.success("Admin deactivated");
+    const result = await deactivateAdmin(adminId);
+    if (result.success) {
+      setAdmins((prev) =>
+        prev.map((a) => (a.id === adminId ? { ...a, is_active: false } : a))
+      );
+      toast.success("Admin deactivated");
+    } else {
+      toast.error(result.error || "Failed to deactivate admin");
+    }
   };
 
   if (loading) {
@@ -1571,7 +1273,7 @@ function AdminsTab() {
               </button>
             </div>
             <div className="space-y-3">
-              {getMockAuditLog()
+              {entries
                 .filter((e) => e.actor_id === selectedAdmin.id)
                 .map((entry) => (
                   <div key={entry.id} className="rounded-lg border border-border bg-surface-0 p-3">
@@ -1582,7 +1284,7 @@ function AdminsTab() {
                     <p className="mt-2 text-sm text-text-secondary">{entry.resource_type}</p>
                   </div>
                 ))}
-              {getMockAuditLog().filter((e) => e.actor_id === selectedAdmin.id).length === 0 && (
+              {entries.filter((e) => e.actor_id === selectedAdmin.id).length === 0 && (
                 <p className="text-center text-sm text-text-muted">No recent activity</p>
               )}
             </div>
@@ -1602,7 +1304,6 @@ function CreateAdminDialog({ onClose, onSubmit }: { onClose: () => void; onSubmi
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 500));
     onSubmit({ name, email, role });
   };
 
@@ -1678,11 +1379,18 @@ function SystemHealthTab() {
   const [lastRefresh, setLastRefresh] = useState(new Date());
 
   useEffect(() => {
-    const mockServices = getMockSystemHealth();
-    const mockJobs = getMockBackgroundJobs();
-    setServices(mockServices);
-    setJobs(mockJobs);
-    setLoading(false);
+    async function load() {
+      setLoading(true);
+      const [healthResult, jobsResult] = await Promise.all([getSystemHealth(), getBackgroundJobs()]);
+      if (healthResult.success && healthResult.data) {
+        setServices(healthResult.data.services);
+      }
+      if (jobsResult.success && jobsResult.data) {
+        setJobs(jobsResult.data.jobs);
+      }
+      setLoading(false);
+    }
+    load();
   }, []);
 
   const healthyCount = services.filter((s) => s.status === "healthy").length;
@@ -1690,10 +1398,18 @@ function SystemHealthTab() {
   const downCount = services.filter((s) => s.status === "down").length;
 
   const refreshHealth = useCallback(() => {
-    const mockServices = getMockSystemHealth();
-    setServices(mockServices);
-    setLastRefresh(new Date());
-    toast.success("Health status refreshed");
+    async function refresh() {
+      const [healthResult, jobsResult] = await Promise.all([getSystemHealth(), getBackgroundJobs()]);
+      if (healthResult.success && healthResult.data) {
+        setServices(healthResult.data.services);
+      }
+      if (jobsResult.success && jobsResult.data) {
+        setJobs(jobsResult.data.jobs);
+      }
+      setLastRefresh(new Date());
+      toast.success("Health status refreshed");
+    }
+    refresh();
   }, []);
 
   const getServiceIcon = (serviceName: string) => {
@@ -1878,6 +1594,8 @@ function SystemHealthTab() {
 // ═══════════════════════════════════════════════════════
 // MAIN PAGE COMPONENT
 // ═══════════════════════════════════════════════════════
+
+
 
 export default function OperationsPage() {
   const [activeTab, setActiveTab] = useState<TabId>("alerts");

@@ -223,6 +223,60 @@ $$;
 
 
 -- ─────────────────────────────────────────────
+-- 11. Search master_chunks for RAG context
+-- Uses pgvector similarity search with 1536-dim embeddings
+-- Falls back to keyword search if embeddings unavailable
+-- ─────────────────────────────────────────────
+CREATE OR REPLACE FUNCTION search_master_chunks(
+  p_query_embedding VECTOR,
+  p_school_id UUID,
+  p_grade INT,
+  p_subject TEXT,
+  p_book_ids UUID[] DEFAULT ARRAY[]::UUID[],
+  p_similarity_threshold FLOAT DEFAULT 0.75,
+  p_limit INT DEFAULT 5
+)
+RETURNS TABLE (
+  id UUID,
+  content TEXT,
+  chapter TEXT,
+  page_number INT,
+  book_title TEXT,
+  book_id UUID,
+  similarity FLOAT
+)
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+  RETURN QUERY
+  SELECT
+    mc.id,
+    mc.content,
+    mc.chapter,
+    mc.page_number,
+    mb.title AS book_title,
+    mb.id AS book_id,
+    1 - (mc.embedding <=> p_query_embedding) AS similarity
+  FROM master_chunks mc
+  JOIN master_books mb ON mb.id = mc.book_id
+  WHERE mc.grade = p_grade
+    AND LOWER(mc.subject) = LOWER(p_subject)
+    AND (p_book_ids = ARRAY[]::UUID[] OR mc.book_id = ANY(p_book_ids))
+    -- Only include chunks from books enabled for this school
+    AND EXISTS (
+      SELECT 1 FROM school_book_settings sbs
+      WHERE sbs.school_id = p_school_id
+        AND sbs.book_id = mc.book_id
+        AND sbs.enabled = true
+    )
+    AND 1 - (mc.embedding <=> p_query_embedding) >= p_similarity_threshold
+  ORDER BY mc.embedding <=> p_query_embedding
+  LIMIT p_limit;
+END;
+$$;
+
+-- ─────────────────────────────────────────────
 -- 7. Cost analytics aggregation for Super Admin
 -- ─────────────────────────────────────────────
 CREATE OR REPLACE FUNCTION get_ai_cost_analytics(
@@ -298,6 +352,15 @@ BEGIN
 END;
 $$;
 
+
+-- master_chunks: filter by grade + subject
+CREATE INDEX IF NOT EXISTS idx_master_chunks_grade_subject
+  ON master_chunks (grade, LOWER(subject));
+
+-- master_chunks: vector similarity search
+CREATE INDEX IF NOT EXISTS idx_master_chunks_embedding
+  ON master_chunks USING ivfflat (embedding vector_cosine_ops)
+  WITH (lists = 100);
 
 -- ─────────────────────────────────────────────
 -- 9. Required indexes for performance

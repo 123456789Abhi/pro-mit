@@ -1,0 +1,13 @@
+# Obsidian config (local to each machine)
+.obsidian/
+.obsidian.json
+
+# Daily notes (session-specific, optional to sync)
+# Uncomment if you want local-only daily notes:
+# daily/*.md
+
+# Canvas workspace (optional)
+*.canvas
+
+# Excalidraw drawings (optional, can be large)
+*.excalidraw

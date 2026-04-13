@@ -1,7 +1,6 @@
 "use server";
 
-import { createSupabaseServer } from "@/lib/supabase/server";
-import { createSupabaseAdmin } from "@/lib/supabase/server";
+import { createSupabaseServer, createSupabaseAdmin } from "@/lib/supabase/server";
 import { z } from "zod";
 import { headers } from "next/headers";
 
@@ -460,10 +459,8 @@ export async function endImpersonationSession(
 
     // Write audit log
     const admin = createSupabaseAdmin();
-      // @ts-ignore — audit_log not in Supabase generated types
+    // @ts-ignore — audit_log not in Supabase generated types
     await admin.from("audit_log").insert({
-      // @ts-ignore — audit_log not in Supabase generated types
-      // @ts-ignore — audit_log not in Supabase generated types
       actor_id: user.id,
       action: "END_IMPERSONATION",
       resource_type: "impersonation_log",
@@ -520,7 +517,7 @@ export async function getAuditLog(
 
     if (validated.search) {
       query = query.or(
-        `actor.users.name.ilike.%${validated.search}%,actor.users.email.ilike.%${validated.search}%,action.ilike.%${validated.search}%`
+        `actor.name.ilike.%${validated.search}%,actor.email.ilike.%${validated.search}%,action.ilike.%${validated.search}%`
       );
     }
 
@@ -745,10 +742,8 @@ export async function createAdminAccount(
     }
 
     // Write audit log
-      // @ts-ignore — audit_log not in Supabase generated types
+    // @ts-ignore — audit_log not in Supabase generated types
     await admin.from("audit_log").insert({
-      // @ts-ignore — audit_log not in Supabase generated types
-      // @ts-ignore — audit_log not in Supabase generated types
       actor_id: user.id,
       action: "CREATE_ADMIN",
       resource_type: "users",
@@ -809,10 +804,8 @@ export async function updateAdminRole(
     }
 
     // Write audit log
-      // @ts-ignore — audit_log not in Supabase generated types
+    // @ts-ignore — audit_log not in Supabase generated types
     await admin.from("audit_log").insert({
-      // @ts-ignore — audit_log not in Supabase generated types
-      // @ts-ignore — audit_log not in Supabase generated types
       actor_id: user.id,
       action: "UPDATE_ADMIN_ROLE",
       resource_type: "users",
@@ -858,10 +851,8 @@ export async function deactivateAdmin(adminId: string) {
       .eq("id", adminId);
 
     // Write audit log
-      // @ts-ignore — audit_log not in Supabase generated types
+    // @ts-ignore — audit_log not in Supabase generated types
     await admin.from("audit_log").insert({
-      // @ts-ignore — audit_log not in Supabase generated types
-      // @ts-ignore — audit_log not in Supabase generated types
       actor_id: user.id,
       action: "DEACTIVATE_ADMIN",
       resource_type: "users",
@@ -902,10 +893,8 @@ export async function resetAdminPassword(adminId: string, newPassword: string) {
     }
 
     // Write audit log
-      // @ts-ignore — audit_log not in Supabase generated types
+    // @ts-ignore — audit_log not in Supabase generated types
     await admin.from("audit_log").insert({
-      // @ts-ignore — audit_log not in Supabase generated types
-      // @ts-ignore — audit_log not in Supabase generated types
       actor_id: user.id,
       action: "RESET_ADMIN_PASSWORD",
       resource_type: "users",

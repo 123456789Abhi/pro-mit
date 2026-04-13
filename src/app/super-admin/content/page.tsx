@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   BookOpen,
   Upload,
@@ -24,6 +24,22 @@ import {
   Database,
 } from "lucide-react";
 import { formatDateIST, formatRelativeTime } from "@/lib/utils";
+import { toast } from "sonner";
+import {
+  getLibraryBooks,
+  uploadBook,
+  getProcessingQueue,
+  getPregenContent,
+  getCoverageData,
+  getUsageAnalytics,
+  getArchivedBooks,
+  toggleBookEnabled,
+  reprocessBook,
+  triggerPregen,
+  retryFailedJob,
+  archiveAndReplace,
+  restoreBook,
+} from "@/lib/actions/super-admin/content";
 
 type Tab = "library" | "upload" | "processing" | "pregen" | "coverage" | "analytics" | "archived";
 
@@ -32,6 +48,9 @@ interface TabConfig {
   label: string;
   icon: React.ReactNode;
 }
+
+const GRADES = ["6", "7", "8", "9", "10", "11", "12"];
+const SUBJECTS = ["Mathematics", "Science", "English", "Hindi", "Social Science", "Sanskrit"];
 
 const TABS: TabConfig[] = [
   { id: "library", label: "Library", icon: <BookOpen className="h-4 w-4" /> },
@@ -104,7 +123,7 @@ function CoverageBadge({ percentage }: { percentage: number }) {
 // ─────────────────────────────────────────────
 
 function LibraryTab() {
-  const [books] = useState<Array<{
+  const [books, setBooks] = useState<Array<{
     id: string;
     title: string;
     grade: number;
@@ -116,8 +135,27 @@ function LibraryTab() {
     topics_count: number;
     is_active: boolean;
   }>>([]);
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({ grade: "", subject: "", status: "" });
+
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      try {
+        const data = await getLibraryBooks({
+          grade: filters.grade ? parseInt(filters.grade) : undefined,
+          subject: filters.subject || undefined,
+          status: filters.status as any || undefined,
+        });
+        setBooks(data.books);
+      } catch {
+        toast.error("Failed to load library books");
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, [filters]);
 
   const grades = [6, 7, 8, 9, 10, 11, 12];
   const subjects = ["Mathematics", "Science", "English", "Hindi", "Social Science", "Sanskrit", "Computer Science"];
@@ -490,7 +528,7 @@ function UploadTab() {
 // ─────────────────────────────────────────────
 
 function ProcessingTab() {
-  const [jobs] = useState<Array<{
+  const [jobs, setJobs] = useState<Array<{
     id: string;
     book_title: string;
     status: string;
@@ -500,7 +538,22 @@ function ProcessingTab() {
     error_message: string | null;
     started_at: string | null;
   }>>([]);
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      try {
+        const data = await getProcessingQueue();
+        setJobs(data.jobs);
+      } catch {
+        toast.error("Failed to load processing queue");
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
 
   const pendingCount = jobs.filter((j) => j.status === "pending").length;
   const processingCount = jobs.filter((j) => j.status === "processing").length;
@@ -598,7 +651,7 @@ function ProcessingTab() {
 // ─────────────────────────────────────────────
 
 function PregenTab() {
-  const [items] = useState<Array<{
+  const [items, setItems] = useState<Array<{
     id: string;
     book_title: string;
     chapter_number: number;
@@ -609,8 +662,23 @@ function PregenTab() {
     hit_count: number;
     created_at: string;
   }>>([]);
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({ type: "" });
+
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      try {
+        const data = await getPregenContent({ type: filters.type as any || undefined });
+        setItems(data.items);
+      } catch {
+        toast.error("Failed to load pregen content");
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, [filters]);
 
   const pregenTypes = ["Notes", "Summaries", "FAQ", "Quizzes", "Drills", "Study Plans"];
 
@@ -717,10 +785,7 @@ function PregenTab() {
 // ─────────────────────────────────────────────
 
 function CoverageTab() {
-  const GRADES = [6, 7, 8, 9, 10, 11, 12];
-  const SUBJECTS = ["Mathematics", "Science", "English", "Hindi", "Social Science", "Sanskrit"];
-
-  const [coverage] = useState<Array<{
+  const [coverage, setCoverage] = useState<Array<{
     grade: number;
     subject: string;
     coverage_percentage: number;
@@ -730,7 +795,24 @@ function CoverageTab() {
     coverage_quizzes: number;
     coverage_drills: number;
   }>>([]);
-  const [overallCoverage] = useState(0);
+  const [overallCoverage, setOverallCoverage] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      try {
+        const data = await getCoverageData();
+        setCoverage(data.coverage);
+        setOverallCoverage(data.overallCoverage);
+      } catch {
+        toast.error("Failed to load coverage data");
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
 
   const getCoverageColor = (percentage: number) => {
     if (percentage >= 80) { return "bg-success"; }
@@ -788,7 +870,7 @@ function CoverageTab() {
                     Class {grade}
                   </td>
                   {SUBJECTS.map((subject) => {
-                    const item = coverage.find((c) => c.grade === grade && c.subject === subject);
+                    const item = coverage.find((c) => String(c.grade) === grade && c.subject === subject);
                     const percentage = item?.coverage_percentage ?? 0;
                     return (
                       <td key={`${grade}-${subject}`} className="px-4 py-3 text-center">
@@ -856,7 +938,7 @@ function CoverageTab() {
 // ─────────────────────────────────────────────
 
 function AnalyticsTab() {
-  const [stats] = useState<{
+  const [stats, setStats] = useState<{
     total_requests: number;
     pregen_hit_rate: number;
     cache_hit_rate: number;
@@ -869,6 +951,28 @@ function AnalyticsTab() {
     cost_savings_inr: 0,
     subject_breakdown: [],
   });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      try {
+        const data = await getUsageAnalytics();
+        setStats({
+          total_requests: data.total_requests,
+          pregen_hit_rate: data.pregen_hit_rate,
+          cache_hit_rate: data.cache_hit_rate,
+          cost_savings_inr: data.cost_savings_inr,
+          subject_breakdown: data.subject_breakdown,
+        });
+      } catch {
+        toast.error("Failed to load usage analytics");
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -950,7 +1054,7 @@ function AnalyticsTab() {
 // ─────────────────────────────────────────────
 
 function ArchivedTab() {
-  const [books] = useState<Array<{
+  const [books, setBooks] = useState<Array<{
     id: string;
     title: string;
     grade: number;
@@ -959,7 +1063,22 @@ function ArchivedTab() {
     deleted_at: string;
     version_history: Array<{ version: number; uploaded_at: string; replaced_by: string | null }>;
   }>>([]);
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      try {
+        const data = await getArchivedBooks();
+        setBooks(data.books);
+      } catch {
+        toast.error("Failed to load archived books");
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, []);
 
   return (
     <div className="space-y-6">
@@ -1026,6 +1145,8 @@ function ArchivedTab() {
 // ─────────────────────────────────────────────
 // Main Page Component
 // ─────────────────────────────────────────────
+
+
 
 export default function ContentPage() {
   const [activeTab, setActiveTab] = useState<Tab>("library");

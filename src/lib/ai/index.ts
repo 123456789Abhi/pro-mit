@@ -43,4 +43,14 @@ export {
 } from "./cost-tracker";
 
 // Pipeline (main entry point)
-export { processAIRequest, AIBudgetExceededError } from "./pipeline";
+export {
+  processAIRequest,
+  AIBudgetExceededError,
+  AIBlockedQueryError,
+} from "./pipeline";
+
+// AI Clients (direct model access)
+export { callAIModel, generateEmbedding } from "./clients";
+
+// RAG (context retrieval)
+export { fetchRAGContext, buildCBSEPrompt } from "./rag";

@@ -395,17 +395,17 @@ async function fetchPlatformMetrics(
 
   // Daily active users (users who logged in today)
   const { count: dailyActiveUsers } = await (supabase as any)
-    .from.from("ai_usage_daily").select("*", { count: "exact", head: true })
+    .from("ai_usage_daily").select("*", { count: "exact", head: true })
     .gte("last_login_at", todayIST)
     .is("deleted_at", null);
 
   // AI queries today
   const { count: aiQueriesToday } = await (supabase as any)
-    .from.from("ai_usage_daily").select("*", { count: "exact", head: true })
+    .from("ai_usage_daily").select("*", { count: "exact", head: true })
     .gte("created_at", todayIST);
 
   // AI queries this month
-  const { count: aiQueriesMonth } = await (supabase as any).from("")
+  const { count: aiQueriesMonth } = await (supabase as any).from("ai_usage_daily")
     .select("*", { count: "exact", head: true })
     .gte("created_at", monthStartIST);
 
@@ -455,7 +455,7 @@ async function fetchFinancialMetrics(
 
   // Students for cost per student calculation
   const { count: studentCount } = await (supabase as any)
-    .from.from("users").select("*", { count: "exact", head: true })
+    .from("users").select("*", { count: "exact", head: true })
     .eq("role", "student")
     .is("deleted_at", null);
 
@@ -463,7 +463,7 @@ async function fetchFinancialMetrics(
 
   // Top cost schools - query ai_usage_daily grouped by school
   const { data: schoolCosts } = await (supabase as any)
-    .from.from("ai_usage_daily")
+    .from("ai_usage_daily")
     .select("school_id, total_cost")
     .gte("date", startDate)
     .lte("date", endDate);
@@ -506,7 +506,7 @@ async function fetchFinancialMetrics(
   ninetyDaysFromNow.setDate(ninetyDaysFromNow.getDate() + 90);
 
   const { data: renewals } = await (supabase as any)
-    .from.from("school_subscriptions").select("monthly_amount, end_date")
+    .from("school_subscriptions").select("monthly_amount, end_date")
     .eq("status", "active")
     .lte("end_date", ninetyDaysFromNow.toISOString());
 
@@ -556,27 +556,28 @@ async function fetchEngagementMetrics(
   // Daily active students
   const { count: dailyActiveStudents } = await (supabase as any)
     .from("ai_usage_daily")
-    .eq("role", "student")
+    .select("*", { count: "exact", head: true })
 
   // Weekly active students
   const { count: weeklyActiveStudents } = await (supabase as any)
     .from("ai_usage_daily")
-    .eq("role", "student")
+    .select("*", { count: "exact", head: true })
 
   // Monthly active students
   const { count: monthlyActiveStudents } = await (supabase as any)
     .from("ai_usage_daily")
-    .eq("role", "student")
+    .select("*", { count: "exact", head: true })
 
   const dauMau = monthlyActiveStudents ? (dailyActiveStudents ?? 0) / monthlyActiveStudents : 0;
 
   // AI interaction rate
   const { count: studentsWithAi } = await (supabase as any)
-    .from.from("ai_usage_daily")
+    .from("ai_usage_daily")
     .select("user_id")
 
   const { count: totalActiveStudents } = await (supabase as any)
-    .from.from("users")
+    .from("users")
+    .select("*", { count: "exact", head: true })
     .eq("role", "student")
 
   const aiInteractionRate = totalActiveStudents
@@ -594,7 +595,7 @@ async function fetchEngagementMetrics(
 
   // Knowledge gaps (from student analytics)
   const { data: knowledgeGaps } = await (supabase as any)
-    .from.from("ai_queries")
+    .from("ai_queries")
     .select("id")
     .eq("identified_at", todayIST)
     .select("id")
@@ -612,7 +613,8 @@ async function fetchEngagementMetrics(
 
   // Risk students
   const { count: riskStudentCount } = await (supabase as any)
-    .from.from("ai_queries")
+    .from("ai_queries")
+    .select("*", { count: "exact", head: true })
     .eq("type", "student_risk")
 
   return {
@@ -657,12 +659,13 @@ async function fetchAiPerformanceMetrics(
 
   // Failed AI calls
   const { count: failedAiCalls } = await (supabase as any)
-    .from.from("ai_queries")
+    .from("ai_queries")
+    .select("*", { count: "exact", head: true })
     .eq("status", "failed")
 
   // Model usage breakdown
   const { data: modelUsage } = await (supabase as any)
-    .from.from("ai_usage_daily")
+    .from("ai_usage_daily")
     .select("model, query_count")
     .lte("date", endDate);
 
@@ -684,14 +687,14 @@ async function fetchAiPerformanceMetrics(
 
   // Avg time to first AI query (first query after student login)
   const { data: firstQueries } = await (supabase as any)
-    .from.from("ai_queries")
-    .select("created_at, users(last_login_at)")
-    .lte("created_at", endDate)
+    .from("ai_queries")
+    .select("created_at, user:users(last_login_at)")
+    .lte("ai_queries.created_at", endDate)
     .limit(100);
 
   const avgTimeToFirstQuery =
     firstQueries?.reduce((sum: number, q: any) => {
-      const loginTime = new Date((q.users as { last_login_at: string } | null)?.last_login_at ?? 0).getTime();
+      const loginTime = new Date((q.user as { last_login_at: string } | null)?.last_login_at ?? 0).getTime();
       const queryTime = new Date(q.created_at).getTime();
       return sum + (queryTime - loginTime);
     }, 0) / (firstQueries?.length || 1);
@@ -715,19 +718,23 @@ async function fetchContentPipelineMetrics(
 ) {
   // Books by status
   const { count: booksPending } = await (supabase as any)
-    .from.from("books")
+    .from("books")
+    .select("*", { count: "exact", head: true })
     .eq("status", "pending")
 
   const { count: booksProcessing } = await (supabase as any)
-    .from.from("books")
+    .from("books")
+    .select("*", { count: "exact", head: true })
     .eq("status", "processing")
 
   const { count: booksReady } = await (supabase as any)
-    .from.from("books")
+    .from("books")
+    .select("*", { count: "exact", head: true })
     .eq("status", "ready")
 
   const { count: booksFailed } = await (supabase as any)
-    .from.from("books")
+    .from("books")
+    .select("*", { count: "exact", head: true })
     .eq("status", "failed")
 
   // Pre-gen coverage
@@ -752,7 +759,7 @@ async function fetchContentPipelineMetrics(
 
   // Queue depth
   const { count: queueDepth } = await (supabase as any)
-    .from.from("ai_processing_queue")
+    .from("ai_processing_queue")
     .eq("status", "pending")
     .select("*", { count: "exact", head: true })
 
@@ -794,40 +801,49 @@ async function fetchSchoolHealthMetrics(
   sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
   const sevenDaysAgoIST = formatInTimeZone(sevenDaysAgo, IST_TIMEZONE, "yyyy-MM-dd");
 
-  const { data: inactiveSchools } = await (supabase as any).from("schools")
+  // Count unique schools with inactive teachers
+  const { data: inactiveTeacherRows } = await (supabase as any)
+    .from("users")
     .select("school_id")
     .eq("role", "teacher")
     .is("deleted_at", null)
     .lt("last_login_at", sevenDaysAgoIST);
 
-  const uniqueInactiveSchools = new Set(inactiveSchools?.map((u: { school_id?: string }) => u.school_id).filter(Boolean));
+  const uniqueInactiveSchools = new Set(inactiveTeacherRows?.map((u: { school_id?: string }) => u.school_id).filter(Boolean));
   const schoolsAtRisk = uniqueInactiveSchools.size;
 
   // Schools expiring in 30 days
   const thirtyDaysFromNow = new Date();
   thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
-  const { count: schoolsExpiring30Days } = await (supabase as any).from("schools")
+  const { count: schoolsExpiring30Days } = await (supabase as any)
+    .from("school_subscriptions")
     .select("*", { count: "exact", head: true })
     .eq("status", "active")
     .lte("end_date", thirtyDaysFromNow.toISOString());
 
   // Trial vs paid
   const { count: trialSchools } = await (supabase as any)
-    .from.from("schools")
-    .eq("subscription_type", "trial")
+    .from("school_subscriptions")
+    .select("*", { count: "exact", head: true })
+    .eq("type", "trial")
 
   const { count: paidSchools } = await (supabase as any)
-    .from.from("schools")
-    .eq("subscription_type", "paid")
+    .from("school_subscriptions")
+    .select("*", { count: "exact", head: true })
+    .eq("type", "paid")
 
   // Teacher onboarding rate
   const { count: totalTeachers } = await (supabase as any)
-    .from.from("users")
+    .from("users")
+    .select("*", { count: "exact", head: true })
     .eq("role", "teacher")
+    .is("deleted_at", null);
 
   const { count: onboardedTeachers } = await (supabase as any)
-    .from.from("users")
+    .from("users")
+    .select("*", { count: "exact", head: true })
     .eq("role", "teacher")
+    .eq("onboarding_completed", true);
 
   const teacherOnboardingRate = totalTeachers
     ? (onboardedTeachers ?? 0) / totalTeachers
@@ -837,14 +853,20 @@ async function fetchSchoolHealthMetrics(
   const todayIST = formatInTimeZone(new Date(), IST_TIMEZONE, "yyyy-MM-dd");
   const { count: activeTeachers } = await (supabase as any)
     .from("users")
+    .select("*", { count: "exact", head: true })
     .eq("role", "teacher")
+    .is("deleted_at", null)
+    .gte("last_login_at", todayIST);
 
   const teacherActivityRate = totalTeachers ? (activeTeachers ?? 0) / totalTeachers : 0;
 
   // Teachers low adoption
   const { count: teachersLowAdoption } = await (supabase as any)
-    .from.from("users")
-    .eq("type", "teacher_low_adoption")
+    .from("users")
+    .select("*", { count: "exact", head: true })
+    .eq("role", "teacher")
+    .eq("low_adoption", true)
+    .is("deleted_at", null);
 
   return {
     newSchoolsThisMonth: newSchoolsThisMonth ?? 0,
@@ -871,19 +893,19 @@ async function fetchNotificationMetrics(
 
   // Sent today
   const { count: sentToday } = await (supabase as any)
-    .from.from("notifications")
+    .from("notifications")
     .select("*")
     .gte("sent_at", todayIST);
 
   // Sent this week
   const { count: sentWeek } = await (supabase as any)
-    .from.from("notifications")
+    .from("notifications")
     .select("*")
     .gte("sent_at", weekAgoIST);
 
   // Delivery rate
   const { data: deliveryStats } = await (supabase as any)
-    .from.from("notification_delivery")
+    .from("notification_delivery")
     .select("delivered_count, recipient_count")
 
   const totalDelivered = deliveryStats?.reduce((sum: number, n: any) => sum + (n.delivered_count ?? 0), 0) ?? 0;
@@ -892,7 +914,8 @@ async function fetchNotificationMetrics(
 
   // Failure rate
   const { count: failedDeliveries } = await (supabase as any)
-    .from.from("notification_delivery")
+    .from("notification_delivery")
+    .select("*", { count: "exact", head: true })
     .eq("delivery_status", "failed")
 
   const failureRate = totalRecipients > 0 ? (failedDeliveries ?? 0) / totalRecipients : 0;
@@ -937,7 +960,7 @@ async function fetchSystemHealthMetrics(
 
   // Error rate
   const { data: errorMetrics } = await (supabase as any)
-    .from.from("api_errors")
+    .from("api_errors")
     .select("error_count, total_requests")
     .lte("date", endDate);
 
@@ -958,12 +981,12 @@ async function fetchSystemHealthMetrics(
 
   // Active impersonation sessions
   const { count: activeImpersonationSessions } = await (supabase as any)
-    .from.from("admin_sessions")
+    .from("admin_sessions")
     .select("*")
 
   // Auth failure rate
   const { data: authMetrics } = await (supabase as any)
-    .from.from("auth_logs")
+    .from("auth_logs")
     .select("failed_logins, total_logins")
     .lte("date", endDate);
 
@@ -973,12 +996,14 @@ async function fetchSystemHealthMetrics(
 
   // Recent admin actions
   const { count: recentAdminActions } = await (supabase as any)
-    .from.from("admin_actions")
+    .from("admin_actions")
+    .select("*", { count: "exact", head: true })
     .eq("actor_role", "super_admin")
 
   // Suspicious cross-school access
   const { count: suspiciousCrossSchoolAccess } = await (supabase as any)
-    .from.from("admin_actions")
+    .from("admin_actions")
+    .select("*", { count: "exact", head: true })
     .eq("type", "suspicious_cross_school_access")
 
   return {
@@ -996,7 +1021,7 @@ async function fetchAlerts(
   supabase: ReturnType<typeof createSupabaseAdmin>
 ): Promise<Alert[]> {
   const { data: alerts } = await (supabase as any)
-    .from.from("admin_alerts")
+    .from("admin_alerts")
     .select("id, type, title, description, severity, status, school_id, created_at, resolved_at, resolved_by, resolution_note, metadata"
     )
     .eq("status", "active")
@@ -1009,7 +1034,7 @@ async function fetchAlerts(
   let schoolNames: Record<string, string> = {};
   if (schoolIds.length > 0) {
     const { data: schools } = await (supabase as any)
-    .from.from("schools")
+    .from("schools")
     .select("id, name")
 
     schoolNames =
@@ -1045,17 +1070,17 @@ async function fetchSchoolRankings(
   const startDate = dateRange.startDate;
   const endDate = dateRange.endDate;
 
-  const { data: rankings } = await (supabase as any)
-    .from.from("schools")
-    .select("school_id, schools(id, name), student_count, ai_query_count, revenue, engagement_score"
-    )
+  // Query school_daily_metrics for engagement scores
+  const { data: metrics } = await (supabase as any)
+    .from("school_daily_metrics")
+    .select("school_id, schools(id, name), student_count, ai_query_count, revenue, engagement_score")
     .gte("date", startDate)
     .lte("date", endDate)
     .order("engagement_score", { ascending: false })
     .limit(20);
 
   return (
-    rankings?.map((r: any, index: number) => ({
+    (metrics ?? []).map((r: any, index: number) => ({
       rank: index + 1,
       schoolId: r.school_id,
       schoolName: (r.schools as { name: string } | null)?.name ?? "Unknown",
@@ -1108,7 +1133,7 @@ async function fetchWowGrowth(
     .is("deleted_at", null);
 
   const { count: prevSchools } = await (supabase as any)
-    .from.from("schools")
+    .from("schools")
     .select("*")
     .is("deleted_at", null);
 
@@ -1118,15 +1143,18 @@ async function fetchWowGrowth(
       : 0;
 
   // Students growth
-  const { count: currentStudents } = await (supabase as any).from("schools")
+  const { count: currentStudents } = await (supabase as any)
+    .from("users")
     .select("*", { count: "exact", head: true })
     .eq("role", "student")
     .lte("created_at", dateRange.endDate)
     .is("deleted_at", null);
 
   const { count: prevStudents } = await (supabase as any)
-    .from.from("users")
+    .from("users")
+    .select("*", { count: "exact", head: true })
     .eq("role", "student")
+    .is("deleted_at", null);
 
   const studentsGrowth =
     prevStudents && prevStudents > 0
@@ -1174,7 +1202,8 @@ async function fetchMomComparison(
       : 0;
 
   // Current period students
-  const { count: currentStudents } = await (supabase as any).from("schools")
+  const { count: currentStudents } = await (supabase as any)
+    .from("users")
     .select("*", { count: "exact", head: true })
     .eq("role", "student")
     .gte("created_at", dateRange.startDate)
@@ -1183,8 +1212,10 @@ async function fetchMomComparison(
 
   // Previous period students
   const { count: prevStudents } = await (supabase as any)
-    .from.from("users")
+    .from("users")
+    .select("*", { count: "exact", head: true })
     .eq("role", "student")
+    .is("deleted_at", null);
 
   const studentsGrowth =
     prevStudents && prevStudents > 0

@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { createSchool } from "@/lib/actions/super-admin/schools";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -19,8 +22,10 @@ const STEPS = [
 ];
 
 export default function NewSchoolPage() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
-  const [principalMode, setPrincipalMode] = useState<"invite" | "direct">("invite");
+  const [submitting, setSubmitting] = useState(false);
+  const [principalMode, setPrincipalMode] = useState<"invite" | "create">("invite");
 
   // Form state
   const [formData, setFormData] = useState({
@@ -66,6 +71,52 @@ export default function NewSchoolPage() {
 
   const nextStep = () => setCurrentStep((s) => Math.min(s + 1, 7));
   const prevStep = () => setCurrentStep((s) => Math.max(s - 1, 1));
+
+  const handleCreate = async () => {
+    setSubmitting(true);
+
+    const result = await createSchool({
+      name: formData.name,
+      board: formData.board,
+      city: formData.city,
+      region: formData.region,
+      academic_year: formData.academicYear,
+      principal_invite_option: principalMode,
+      principal_name: formData.principalName,
+      principal_email: formData.principalEmail,
+      principal_phone: formData.principalPhone || "",
+      principal_employee_id: formData.principalEmployeeId || undefined,
+      principal_password: principalMode === "create" ? formData.principalPassword || undefined : undefined,
+      subscription_plan: formData.plan as "trial" | "paid",
+      subscription_duration: formData.duration === "14" ? "14_days" : formData.duration === "1" ? "1_month" : formData.duration === "3" ? "3_months" : formData.duration === "6" ? "6_months" : "12_months",
+      subscription_start_date: formData.startDate || new Date().toISOString().split("T")[0],
+      subscription_expiry_date: formData.expiryDate || "",
+      price_per_student_monthly: formData.pricePerStudent,
+      min_billing_students: 1,
+      ai_monthly_budget: formData.monthlyBudget,
+      ai_alert_threshold: formData.alertThreshold,
+      ai_is_capped: formData.isCapped,
+      ai_reset_day: formData.resetDay,
+      gini_name: formData.giniName,
+      logo_url: formData.logoUrl || undefined,
+      primary_color: formData.primaryColor,
+      auto_enable_all_books: formData.autoEnableBooks,
+      enable_notes: formData.enableNotes,
+      enable_summaries: formData.enableSummaries,
+      enable_faq: formData.enableFaq,
+      enable_quizzes: formData.enableQuizzes,
+      enable_drills: formData.enableDrills,
+    });
+
+    if (result.success) {
+      toast.success("School created successfully");
+      router.push("/super-admin/schools" as any);
+    } else {
+      toast.error(result.error || "Failed to create school");
+    }
+
+    setSubmitting(false);
+  };
 
   return (
     <div className="container max-w-4xl mx-auto py-8 space-y-8">
@@ -169,8 +220,8 @@ export default function NewSchoolPage() {
                   Send Invite (Recommended)
                 </Button>
                 <Button
-                  variant={principalMode === "direct" ? "default" : "outline"}
-                  onClick={() => setPrincipalMode("direct")}
+                  variant={principalMode === "create" ? "default" : "outline"}
+                  onClick={() => setPrincipalMode("create")}
                 >
                   Create Directly
                 </Button>
@@ -213,7 +264,7 @@ export default function NewSchoolPage() {
                     onChange={(e) => updateForm("principalEmployeeId", e.target.value)}
                   />
                 </div>
-                {principalMode === "direct" && (
+                {principalMode === "create" && (
                   <div className="col-span-2">
                     <Label htmlFor="principalPassword">Temporary Password</Label>
                     <Input
@@ -522,7 +573,12 @@ export default function NewSchoolPage() {
         {currentStep < 7 ? (
           <Button onClick={nextStep}>Next</Button>
         ) : (
-          <Button>Create School</Button>
+          <Button
+            onClick={handleCreate}
+            disabled={submitting}
+          >
+            {submitting ? "Creating..." : "Create School"}
+          </Button>
         )}
       </div>
     </div>

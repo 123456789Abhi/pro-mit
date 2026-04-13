@@ -13,6 +13,9 @@ import {
   incrementSchoolSpend,
   updateDailyUsage,
 } from "./cost-tracker";
+import { callAIModel } from "./clients";
+import { fetchRAGContext, buildCBSEPrompt } from "./rag";
+import { filterStudentQuery, sanitizeAIOutput } from "./content-filter";
 
 // ─────────────────────────────────────────────
 // Types for the pipeline
@@ -163,8 +166,25 @@ export async function processAIRequest(
     };
   }
 
+  // ── 5.5. Content Safety Gate — INPUT ──
+  // Inspired by AgentHarm: filter harmful queries before they reach AI
+  const inputCheck = filterStudentQuery(input.query);
+  if (!inputCheck.allowed) {
+    throw new AIBlockedQueryError(
+      inputCheck.reason ?? "This query cannot be processed.",
+      inputCheck.severity
+    );
+  }
+
+  // ── 5.6. Use sanitized query if available ──
+  const safeQuery = inputCheck.sanitizedQuery ?? input.query;
+
   // ── 6. Live API call with routed model ──
-  const apiResponse = await callLiveAPI(supabase, input, routing);
+  const apiResponse = await callLiveAPI(
+    supabase,
+    { ...input, query: safeQuery },
+    routing
+  );
   const latencyMs = Math.round(performance.now() - startTime);
 
   const costInr = calculateActualCost(
@@ -173,8 +193,12 @@ export async function processAIRequest(
     apiResponse.tokensOut
   );
 
+  // ── 6.5. Content Safety Gate — OUTPUT ──
+  // Sanitize AI response before serving to students
+  const sanitizedAnswer = sanitizeAIOutput(apiResponse.answer);
+
   // ── 7. Cache the response ──
-  await cacheResponse(supabase, input, apiResponse.answer, apiResponse.sources);
+  await cacheResponse(supabase, input, sanitizedAnswer, apiResponse.sources);
 
   // ── 8. Log and track costs ──
   await logAndTrack(supabase, input, routing, {
@@ -195,7 +219,7 @@ export async function processAIRequest(
   );
 
   return {
-    answer: apiResponse.answer,
+    answer: sanitizedAnswer,
     sources: apiResponse.sources,
     responseSource: ResponseSource.LIVE_API,
     model: routing.model,
@@ -309,9 +333,16 @@ async function searchSemanticCache(
 /**
  * Calls the live AI API with the routed model.
  * Handles Gemini Flash, Claude Haiku, and Claude Sonnet.
+ *
+ * Flow:
+ * 1. Build CBSE system prompt (curriculum rules, role instructions)
+ * 2. Fetch RAG context from school's enabled textbooks
+ * 3. Combine system prompt + RAG context + user query
+ * 4. Call the routed AI model
+ * 5. Return answer, sources, and token counts
  */
 async function callLiveAPI(
-  _supabase: SupabaseClient,
+  supabase: SupabaseClient,
   input: RouterInput,
   routing: ModelRoutingDecision
 ): Promise<{
@@ -320,20 +351,54 @@ async function callLiveAPI(
   tokensIn: number;
   tokensOut: number;
 }> {
-  // This is the integration point — actual API calls go here.
-  // Implementation depends on:
-  // - Gemini SDK for Flash
-  // - Anthropic SDK for Haiku/Sonnet
-  // - RAG context retrieval from master_chunks + school_book_settings
-
-  // Structured placeholder with proper typing
-  void routing;
-  void input;
-
-  throw new Error(
-    `[ai_pipeline] callLiveAPI not yet implemented. ` +
-      `Routing decision: ${routingDecisionToLog(routing)}`
+  // ── 1. Build CBSE system prompt ──
+  const systemPrompt = buildCBSEPrompt(
+    input.grade,
+    input.subject,
+    routing.feature
   );
+
+  // ── 2. Fetch RAG context (textbook chunks) ──
+  let ragContext = { context: "", sources: [] as Array<{ book: string; chapter: string; page: number }> };
+  try {
+    ragContext = await fetchRAGContext(
+      supabase as unknown as Parameters<typeof fetchRAGContext>[0],
+      input.schoolId,
+      input.query,
+      input.grade,
+      input.subject
+    );
+  } catch (err) {
+    // Non-fatal: log and continue without RAG context
+    console.warn(`[ai_pipeline] RAG context fetch failed: ${(err as Error).message}`);
+  }
+
+  // ── 3. Build full prompt with RAG context ──
+  const userQuery = ragContext.context
+    ? `${input.query}\n\n[CONTEXT FROM YOUR TEXTBOOK]\n${ragContext.context}`
+    : input.query;
+
+  // ── 4. Call the AI model ──
+  const result = await callAIModel(
+    routing.model,
+    systemPrompt,
+    userQuery,
+    routing.maxTokens,
+    routing.temperature
+  );
+
+  // ── 5. Merge RAG sources with AI-extracted sources ──
+  // Prefer RAG sources (authoritative) over AI-extracted ones
+  const allSources = ragContext.sources.length > 0
+    ? ragContext.sources
+    : result.sources;
+
+  return {
+    answer: result.answer,
+    sources: allSources,
+    tokensIn: result.tokensIn,
+    tokensOut: result.tokensOut,
+  };
 }
 
 /**
@@ -437,4 +502,20 @@ export class AIBudgetExceededError extends Error {
     this.currentSpend = currentSpend;
     this.budget = budget;
   }
+}
+
+// ─────────────────────────────────────────────
+/**
+ * Thrown when a student's query is blocked by the content safety filter.
+ * Inspired by AgentHarm's refusal evaluation.
+ */
+export class AIBlockedQueryError extends Error {
+  public readonly severity: "block" | "warn";
+
+  constructor(reason: string, severity: "block" | "warn" = "block") {
+    super(`[Content Safety] ${reason}`);
+    this.name = "AIBlockedQueryError";
+    this.severity = severity;
+  }
+}
 }

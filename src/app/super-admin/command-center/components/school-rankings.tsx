@@ -53,7 +53,7 @@ export function SchoolRankings({ rankings }: SchoolRankingsProps) {
                           ? "bg-warning/20 text-warning"
                           : school.rank === 2
                             ? "bg-text-muted/20 text-text-muted"
-                            : "bg-warning-700/20 text-warning-700"
+                            : "bg-yellow-100 text-warning-700"
                         : "bg-surface-2 text-text-secondary"
                     }`}
                   >

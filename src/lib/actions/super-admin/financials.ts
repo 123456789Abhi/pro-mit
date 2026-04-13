@@ -38,6 +38,18 @@ export const SendInvoiceSchema = z.object({
   billingPeriod: z.string().min(1),
 });
 
+export const MarkInvoicePaidSchema = z.object({
+  invoiceId: z.string().uuid(),
+});
+
+export const FreezeSchoolBillingSchema = z.object({
+  schoolId: z.string().uuid(),
+});
+
+export const UnfreezeSchoolBillingSchema = z.object({
+  schoolId: z.string().uuid(),
+});
+
 // ─────────────────────────────────────────────
 // Revenue Types
 // ─────────────────────────────────────────────
@@ -513,6 +525,7 @@ export async function sendInvoiceToSchool(
 
 export async function markInvoicePaid(invoiceId: string): Promise<ActionResult> {
   try {
+    const validated = MarkInvoicePaidSchema.parse({ invoiceId });
     const supabase = await createSupabaseServer() as any;
     const admin = createSupabaseAdmin() as any;
 
@@ -528,7 +541,7 @@ export async function markInvoicePaid(invoiceId: string): Promise<ActionResult> 
         status: "paid",
         paid_at: new Date().toISOString(),
       })
-      .eq("id", invoiceId);
+      .eq("id", validated.invoiceId);
 
     if (error) {
       return { success: false, error: error.message, code: "DB_ERROR" };
@@ -536,12 +549,16 @@ export async function markInvoicePaid(invoiceId: string): Promise<ActionResult> 
 
     return { success: true, data: undefined };
   } catch (err) {
+    if (err instanceof z.ZodError) {
+      return { success: false, error: "Invalid input data", code: "VALIDATION_ERROR" };
+    }
     return { success: false, error: getErrorMessage(err), code: "INTERNAL_ERROR" };
   }
 }
 
 export async function freezeSchoolBilling(schoolId: string): Promise<ActionResult> {
   try {
+    const validated = FreezeSchoolBillingSchema.parse({ schoolId });
     const supabase = await createSupabaseServer() as any;
     const admin = createSupabaseAdmin() as any;
 
@@ -565,7 +582,7 @@ export async function freezeSchoolBilling(schoolId: string): Promise<ActionResul
     const { error } = await admin
     .from("schools")
       .update({ status: "frozen" })
-      .eq("id", schoolId);
+      .eq("id", validated.schoolId);
 
     if (error) {
       return { success: false, error: error.message, code: "DB_ERROR" };
@@ -581,12 +598,16 @@ export async function freezeSchoolBilling(schoolId: string): Promise<ActionResul
 
     return { success: true, data: undefined };
   } catch (err) {
+    if (err instanceof z.ZodError) {
+      return { success: false, error: "Invalid input data", code: "VALIDATION_ERROR" };
+    }
     return { success: false, error: getErrorMessage(err), code: "INTERNAL_ERROR" };
   }
 }
 
 export async function unfreezeSchoolBilling(schoolId: string): Promise<ActionResult> {
   try {
+    const validated = UnfreezeSchoolBillingSchema.parse({ schoolId });
     const supabase = await createSupabaseServer() as any;
     const admin = createSupabaseAdmin() as any;
 
@@ -610,7 +631,7 @@ export async function unfreezeSchoolBilling(schoolId: string): Promise<ActionRes
     const { error } = await admin
     .from("schools")
       .update({ status: "active" })
-      .eq("id", schoolId);
+      .eq("id", validated.schoolId);
 
     if (error) {
       return { success: false, error: error.message, code: "DB_ERROR" };
@@ -626,6 +647,9 @@ export async function unfreezeSchoolBilling(schoolId: string): Promise<ActionRes
 
     return { success: true, data: undefined };
   } catch (err) {
+    if (err instanceof z.ZodError) {
+      return { success: false, error: "Invalid input data", code: "VALIDATION_ERROR" };
+    }
     return { success: false, error: getErrorMessage(err), code: "INTERNAL_ERROR" };
   }
 }
@@ -946,7 +970,7 @@ export async function getRenewalPipeline(): Promise<ActionResult<RenewalItem[]>>
         )
       `)
       .eq("status", "active")
-      .not("deleted_at", "is", null);
+      .is("deleted_at", null);
 
     if (error) {
       return { success: false, error: error.message, code: "DB_ERROR" };

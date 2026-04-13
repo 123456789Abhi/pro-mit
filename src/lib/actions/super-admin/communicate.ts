@@ -200,6 +200,7 @@ export async function getNotificationById(id: string): Promise<NotificationRow |
       links
     `)
     .eq("id", id)
+    .eq("sender_role", "super_admin")
     .single();
 
   if (error) {return null;}
@@ -213,6 +214,15 @@ export async function getNotificationRecipients(
   notificationId: string
 ): Promise<{ recipient_id: string; status: string; rating: number | null }[]> {
   const supabase = await createSupabaseServer() as any;
+
+  const { data: notificationData } = await supabase
+  .from("notifications")
+    .select("id")
+    .eq("id", notificationId)
+    .eq("sender_role", "super_admin")
+    .single();
+
+  if (notificationData === null) {return [];}
 
   const { data, error } = await supabase
   .from("notification_recipients")
@@ -488,9 +498,14 @@ export async function retryFailedNotification(
         .eq("status", "failed");
 
       // Update notification status
+      const { data: notif } = await supabase
+      .from("notifications")
+        .select("id, version")
+        .eq("id", notificationId)
+        .single();
       await supabase
       .from("notifications")
-        .update({ status: NotificationStatus.SENDING, version: 1 })
+        .update({ status: NotificationStatus.SENDING, version: (notif?.version ?? 0) + 1 })
         .eq("id", notificationId);
     }
 
@@ -874,9 +889,9 @@ export async function getSchoolPerformance(): Promise<
       school_id,
       status,
       rating,
-      notifications!inner(school_id)
+      notifications!inner(school_id, sender_role)
     `)
-    .not("notifications.sender_role", "neq", "super_admin");
+    .eq("notifications.sender_role", "super_admin");
 
   if (error) {throw new Error(`Failed to fetch school performance: ${error.message}`);}
 
@@ -929,17 +944,19 @@ export async function getRatingDistribution(): Promise<Record<number, number>> {
 
   const { data, error } = await supabase
   .from("notification_recipients")
-    .select("rating")
+    .select("rating, notifications(sender_role)")
     .not("rating", "is", null);
 
   if (error) {throw new Error(`Failed to fetch ratings: ${error.message}`);}
 
+  const rows = (data ?? []) as any[];
   const dist: Record<number, number> = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-  for (const row of (data ?? []) as any[]) {
+  for (const row of rows) {
+    const senderRole = (row.notifications as { sender_role: string } | null)?.sender_role;
+    if (senderRole !== "super_admin") continue;
     const r = row.rating as number;
     if (r >= 1 && r <= 5) {dist[r]++;}
   }
-
   return dist;
 }
 
@@ -956,7 +973,7 @@ export async function getFeedbackTrends(
 
   const { data, error } = await supabase
   .from("notification_feedback")
-    .select("created_at, rating")
+    .select("created_at, rating, notifications(sender_role)")
     .gte("created_at", fromDate.toISOString());
 
   if (error) {throw new Error(`Failed to fetch feedback trends: ${error.message}`);}
@@ -964,6 +981,8 @@ export async function getFeedbackTrends(
   const byDate: Record<string, { count: number; totalRating: number }> = {};
 
   for (const row of (data ?? []) as any[]) {
+    const senderRole = (row.notifications as { sender_role: string } | null)?.sender_role;
+    if (senderRole !== "super_admin") continue;
     const date = (row.created_at as string).split("T")[0];
     if (!byDate[date]) {byDate[date] = { count: 0, totalRating: 0 };}
     byDate[date].count++;
@@ -987,13 +1006,15 @@ export async function getFeedbackByCategory(): Promise<Record<string, number>> {
 
   const { data, error } = await supabase
   .from("notification_feedback")
-    .select("notification_id, notifications(category)");
+    .select("notification_id, notifications(category, sender_role)");
 
   if (error) {throw new Error(`Failed to fetch feedback categories: ${error.message}`);}
 
   const byCategory: Record<string, number> = {};
   for (const row of (data ?? []) as any[]) {
-    const category = (row.notifications as { category: string } | null)?.category ?? "uncategorized";
+    const notif = row.notifications as { category: string; sender_role: string } | null;
+    if (notif?.sender_role !== "super_admin") continue;
+    const category = notif?.category ?? "uncategorized";
     byCategory[category] = (byCategory[category] ?? 0) + 1;
   }
 
@@ -1010,13 +1031,15 @@ export async function getSchoolEngagementScores(): Promise<
 
   const { data, error } = await supabase
   .from("notification_feedback")
-    .select("school_id, rating");
+    .select("school_id, rating, notifications(sender_role)");
 
   if (error) {throw new Error(`Failed to fetch engagement scores: ${error.message}`);}
 
   const bySchool: Record<string, { name: string; feedback_count: number; totalRating: number }> = {};
 
   for (const row of (data ?? []) as any[]) {
+    const senderRole = (row.notifications as { sender_role: string } | null)?.sender_role;
+    if (senderRole !== "super_admin") continue;
     if (!bySchool[row.school_id]) {
       bySchool[row.school_id] = { name: row.school_id, feedback_count: 0, totalRating: 0 };
     }
@@ -1117,12 +1140,12 @@ export async function getWeeklyFeedbackSummary(): Promise<{
 
   const { data: thisWeekData } = await supabase
   .from("notification_feedback")
-    .select("rating, feedback_text")
+    .select("rating, feedback_text, notifications(sender_role)")
     .gte("created_at", oneWeekAgo.toISOString());
 
   const { data: lastWeekData } = await supabase
   .from("notification_feedback")
-    .select("rating, feedback_text")
+    .select("rating, feedback_text, notifications(sender_role)")
     .gte("created_at", twoWeeksAgo.toISOString())
     .lt("created_at", oneWeekAgo.toISOString());
 
@@ -1146,6 +1169,8 @@ export async function getWeeklyFeedbackSummary(): Promise<{
   // Tag frequency this week
   const tagCounts: Record<string, number> = {};
   for (const row of thisWeek) {
+    const senderRole = (row.notifications as { sender_role: string } | null)?.sender_role;
+    if (senderRole !== "super_admin") continue;
     const tags = classifyFeedback(row.feedback_text as string);
     for (const tag of tags) {
       tagCounts[tag] = (tagCounts[tag] ?? 0) + 1;
