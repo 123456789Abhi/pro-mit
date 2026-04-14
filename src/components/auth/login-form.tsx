@@ -7,6 +7,7 @@ import { Eye, EyeOff, Mail, Lock, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { login } from "@/lib/supabase/auth-actions";
+import { createSupabaseBrowser } from "@/lib/supabase";
 
 const ERROR_MESSAGES: Record<string, string> = {
   auth_callback_failed: "Authentication failed. Please try again.",
@@ -49,22 +50,24 @@ export function LoginForm() {
     const formData = new FormData(form);
 
     startTransition(async () => {
+      // First validate via server action (rate limiting, Zod validation)
       const result = await login(formData);
 
       if (result.success) {
         toast.success("Welcome back!");
 
-        // ROOT CAUSE FIX: next/headers cookies() is read-only in server action
-        // context. setAll() calls inside onAuthStateChange are silently ignored.
-        // Fix: construct the cookie in the exact format @supabase/ssr v0.5.2 expects
-        // (cookie name "supabase.auth.token", JSON with currentSession + expiresAt).
+        // Use the browser Supabase client to set the session.
+        // This fires onAuthStateChange which triggers storage.setItem() →
+        // applyServerStorage() with base64-URL encoding (the "base64-" prefix),
+        // matching exactly what createServerClient.getItem() in middleware expects.
+        // The previous manual document.cookie approach set raw JSON without the
+        // base64- prefix, causing getUser() to return null and redirect to login.
         if (result.session) {
-          const expiresAt = Math.floor(Date.now() / 1000) + 3600;
-          const cookieValue = JSON.stringify({
-            currentSession: result.session,
-            expiresAt,
+          const supabase = createSupabaseBrowser();
+          await supabase.auth.setSession({
+            access_token: (result.session as { access_token: string }).access_token,
+            refresh_token: (result.session as { refresh_token: string }).refresh_token ?? "",
           });
-          document.cookie = `supabase.auth.token=${encodeURIComponent(cookieValue)}; path=/; max-age=3600; SameSite=Lax`;
         }
 
         // Use window.location.href to force a full page reload so middleware runs.

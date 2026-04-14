@@ -121,6 +121,13 @@ export async function middleware(request: NextRequest) {
 
   // Not authenticated — redirect to login
   if (!user || authError) {
+    // Log for debugging — auth failures should never be silent
+    console.error("[Auth] getUser() failed:", {
+      hasUser: !!user,
+      authError: authError?.message,
+      cookiePresent: request.cookies.get("supabase.auth.token") !== undefined,
+      pathname,
+    });
     const loginUrl = new URL("/auth/login", request.url);
     loginUrl.searchParams.set("redirectTo", pathname);
     return NextResponse.redirect(loginUrl);
@@ -136,6 +143,10 @@ export async function middleware(request: NextRequest) {
 
   if (userError || !userData) {
     // User exists in auth but not in public.users — broken state
+    console.error("[Auth] User in auth but not in public.users:", {
+      userId: user.id,
+      userError: userError?.message,
+    });
     return NextResponse.redirect(new URL("/auth/login?error=account_not_found", request.url));
   }
 

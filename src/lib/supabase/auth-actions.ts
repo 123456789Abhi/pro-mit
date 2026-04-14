@@ -27,7 +27,9 @@ const resetSchema = z.object({
 // Server Actions
 // ─────────────────────────────────────────────
 
-type ActionResult = { success: true; session?: object } | { success: false; error: string };
+type ActionResult =
+  | { success: true; session?: { access_token: string; refresh_token: string; expires_at?: number; user: object } }
+  | { success: false; error: string };
 
 export async function login(formData: FormData): Promise<ActionResult> {
   const raw = {
