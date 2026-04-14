@@ -27,7 +27,7 @@ const resetSchema = z.object({
 // Server Actions
 // ─────────────────────────────────────────────
 
-type ActionResult = { success: true } | { success: false; error: string };
+type ActionResult = { success: true; session?: object } | { success: false; error: string };
 
 export async function login(formData: FormData): Promise<ActionResult> {
   const raw = {
@@ -41,7 +41,7 @@ export async function login(formData: FormData): Promise<ActionResult> {
   }
 
   const supabase = await createSupabaseServer();
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email: parsed.data.email,
     password: parsed.data.password,
   });
@@ -50,8 +50,14 @@ export async function login(formData: FormData): Promise<ActionResult> {
     return { success: false, error: "Invalid email or password" };
   }
 
-  // Middleware handles role-based redirect on next request
-  return { success: true };
+  // ROOT CAUSE FIX: next/headers cookies() is read-only in server action context.
+  // setAll() calls inside onAuthStateChange are silently ignored.
+  // The fix: return the session object to the client; the client sets the
+  // cookie via document.cookie (browser context where writing works).
+  return {
+    success: true,
+    session: data.session ?? {},
+  };
 }
 
 export async function signup(formData: FormData): Promise<ActionResult> {

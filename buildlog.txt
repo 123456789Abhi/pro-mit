@@ -1,0 +1,45 @@
+
+> lernen@1.0.0 build
+> next build --no-lint
+
+ ⚠ Linting is disabled.
+  ▲ Next.js 14.2.35
+  - Environments: .env.local
+  - Experiments (use with caution):
+    · typedRoutes
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/14) ...
+   Generating static pages (3/14) 
+   Generating static pages (6/14) 
+   Generating static pages (10/14) 
+ ✓ Generating static pages (14/14)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    162 B          87.4 kB
+├ ○ /_not-found                          873 B          88.1 kB
+├ ƒ /api/auth/set-session                0 B                0 B
+├ ƒ /auth/callback                       0 B                0 B
+├ ○ /auth/login                          3.77 kB         116 kB
+├ ○ /super-admin                         162 B          87.4 kB
+├ ƒ /super-admin/command-center          10.7 kB         114 kB
+├ ○ /super-admin/communicate             27 kB           168 kB
+├ ○ /super-admin/content                 8.73 kB         121 kB
+├ ƒ /super-admin/financials              12.5 kB         153 kB
+├ ○ /super-admin/operations              12.7 kB         125 kB
+├ ƒ /super-admin/schools/[schoolId]      18.2 kB         124 kB
+└ ○ /super-admin/schools/new             10.1 kB         148 kB
++ First Load JS shared by all            87.3 kB
+  ├ chunks/117-a6714a8fd42246cb.js       31.7 kB
+  ├ chunks/fd9d1056-96ce47984f4dfdd7.js  53.6 kB
+  └ other shared chunks (total)          1.9 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

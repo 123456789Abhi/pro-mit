@@ -43,5 +43,12 @@ export default defineConfig({
       use: { ...devices["iPhone 12"] },
     },
   ],
-  webServer: undefined,
+  webServer: {
+    command: "npm run dev",
+    url: "http://localhost:3000",
+    reuseExistingServer: true,
+    timeout: 60000,
+    stdout: "ignore",
+    stderr: "pipe",
+  },
 });

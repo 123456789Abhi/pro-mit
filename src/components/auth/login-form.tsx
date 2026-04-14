@@ -53,11 +53,22 @@ export function LoginForm() {
 
       if (result.success) {
         toast.success("Welcome back!");
-        // Use a regular redirect instead of window.location.href to a hardcoded path.
-        // The middleware will intercept the navigation and redirect to the
-        // correct role-based dashboard based on the user's role from public.users.
-        const destination = redirectTo ?? "/";
-        router.push(destination as any);
+
+        // ROOT CAUSE FIX: next/headers cookies() is read-only in server action
+        // context. setAll() calls inside onAuthStateChange are silently ignored.
+        // Fix: construct the cookie in the exact format @supabase/ssr v0.5.2 expects
+        // (cookie name "supabase.auth.token", JSON with currentSession + expiresAt).
+        if (result.session) {
+          const expiresAt = Math.floor(Date.now() / 1000) + 3600;
+          const cookieValue = JSON.stringify({
+            currentSession: result.session,
+            expiresAt,
+          });
+          document.cookie = `supabase.auth.token=${encodeURIComponent(cookieValue)}; path=/; max-age=3600; SameSite=Lax`;
+        }
+
+        // Use window.location.href to force a full page reload so middleware runs.
+        window.location.href = redirectTo ?? "/";
       } else {
         toast.error(result.error);
       }
