@@ -29,7 +29,7 @@
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
         ],
-        "timeout": 60000
+        "timeout": 30000
       },
       {
         "outputDir": "C:/Users/Abhi/OneDrive/Desktop/mitosh/pro-mit/test-results",
@@ -45,7 +45,7 @@
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
         ],
-        "timeout": 60000
+        "timeout": 30000
       },
       {
         "outputDir": "C:/Users/Abhi/OneDrive/Desktop/mitosh/pro-mit/test-results",
@@ -61,7 +61,7 @@
         "testMatch": [
           "**/*.@(spec|test).?(c|m)[jt]s?(x)"
         ],
-        "timeout": 60000
+        "timeout": 30000
       }
     ],
     "quiet": false,
@@ -118,7 +118,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -128,14 +128,14 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "timedOut",
-                      "duration": 82481,
+                      "duration": 40805,
                       "error": {
-                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                       },
                       "errors": [
                         {
-                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                         },
                         {
                           "location": {
@@ -143,13 +143,13 @@
                             "column": 16,
                             "line": 16
                           },
-                          "message": "Error: page.click: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Add New School')\u001b[22m\n\n\n  14 |   test(\"1.1 - School creation via onboarding wizard\", async ({ page }) => {\n  15 |     // Navigate to Add New School tab\n> 16 |     await page.click('text=Add New School');\n     |                ^\n  17 |\n  18 |     // Step 1: School Info\n  19 |     const school = generateTestSchool();\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:16:16"
+                          "message": "Error: page.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Add New School')\u001b[22m\n\n\n  14 |   test(\"1.1 - School creation via onboarding wizard\", async ({ page }) => {\n  15 |     // Navigate to Add New School tab\n> 16 |     await page.click('text=Add New School');\n     |                ^\n  17 |\n  18 |     // Step 1: School Info\n  19 |     const school = generateTestSchool();\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:16:16"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:43:44.316Z",
+                      "startTime": "2026-04-15T11:16:19.221Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -184,7 +184,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -194,14 +194,14 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "timedOut",
-                      "duration": 82107,
+                      "duration": 40303,
                       "error": {
-                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                       },
                       "errors": [
                         {
-                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                         },
                         {
                           "location": {
@@ -209,13 +209,13 @@
                             "column": 47,
                             "line": 57
                           },
-                          "message": "Error: locator.click: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('tbody tr').first().locator('button').first()\u001b[22m\n\n\n  55 |     // Select an active school\n  56 |     const schoolRow = page.locator(\"tbody tr\").first();\n> 57 |     await schoolRow.locator(\"button\").first().click();\n     |                                               ^\n  58 |     await page.click('text=School Details');\n  59 |\n  60 |     // Navigate to Settings tab\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:57:47"
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('tbody tr').first().locator('button').first()\u001b[22m\n\n\n  55 |     // Select an active school\n  56 |     const schoolRow = page.locator(\"tbody tr\").first();\n> 57 |     await schoolRow.locator(\"button\").first().click();\n     |                                               ^\n  58 |     await page.click('text=School Details');\n  59 |\n  60 |     // Navigate to Settings tab\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:57:47"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:43:44.195Z",
+                      "startTime": "2026-04-15T11:16:19.035Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -250,7 +250,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -258,16 +258,16 @@
                   "results": [
                     {
                       "workerIndex": 2,
-                      "parallelIndex": 0,
+                      "parallelIndex": 1,
                       "status": "timedOut",
-                      "duration": 83316,
+                      "duration": 39698,
                       "error": {
-                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                       },
                       "errors": [
                         {
-                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                         },
                         {
                           "location": {
@@ -275,13 +275,13 @@
                             "column": 16,
                             "line": 74
                           },
-                          "message": "Error: page.selectOption: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[name=\"status\"]')\u001b[22m\n\n\n  72 |     // Navigate to deactivated school\n  73 |     await page.goto(\"/super-admin/schools\");\n> 74 |     await page.selectOption('[name=\"status\"]', \"deactivated\");\n     |                ^\n  75 |     await page.waitForTimeout(500);\n  76 |\n  77 |     // Click on deactivated school\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:74:16"
+                          "message": "Error: page.selectOption: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[name=\"status\"]')\u001b[22m\n\n\n  72 |     // Navigate to deactivated school\n  73 |     await page.goto(\"/super-admin/schools\");\n> 74 |     await page.selectOption('[name=\"status\"]', \"deactivated\");\n     |                ^\n  75 |     await page.waitForTimeout(500);\n  76 |\n  77 |     // Click on deactivated school\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:74:16"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:45:39.732Z",
+                      "startTime": "2026-04-15T11:17:12.648Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -316,7 +316,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -324,16 +324,16 @@
                   "results": [
                     {
                       "workerIndex": 3,
-                      "parallelIndex": 1,
+                      "parallelIndex": 0,
                       "status": "timedOut",
-                      "duration": 84538,
+                      "duration": 40636,
                       "error": {
-                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                       },
                       "errors": [
                         {
-                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                         },
                         {
                           "location": {
@@ -341,13 +341,13 @@
                             "column": 16,
                             "line": 95
                           },
-                          "message": "Error: page.click: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Add New School')\u001b[22m\n\n\n  93 |\n  94 |   test(\"1.4 - Invite vs direct creation\", async ({ page }) => {\n> 95 |     await page.click('text=Add New School');\n     |                ^\n  96 |\n  97 |     // Test invite option\n  98 |     const inviteEmail = `invite.${Date.now()}@test.com`;\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:95:16"
+                          "message": "Error: page.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Add New School')\u001b[22m\n\n\n  93 |\n  94 |   test(\"1.4 - Invite vs direct creation\", async ({ page }) => {\n> 95 |     await page.click('text=Add New School');\n     |                ^\n  96 |\n  97 |     // Test invite option\n  98 |     const inviteEmail = `invite.${Date.now()}@test.com`;\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:95:16"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:45:42.893Z",
+                      "startTime": "2026-04-15T11:17:13.010Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -382,7 +382,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -390,14 +390,14 @@
                   "results": [
                     {
                       "workerIndex": 4,
-                      "parallelIndex": 0,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 23566,
+                      "duration": 8274,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:47:51.934Z",
+                      "startTime": "2026-04-15T11:18:06.025Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -416,7 +416,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -424,16 +424,16 @@
                   "results": [
                     {
                       "workerIndex": 5,
-                      "parallelIndex": 1,
+                      "parallelIndex": 0,
                       "status": "timedOut",
-                      "duration": 75224,
+                      "duration": 41043,
                       "error": {
-                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                       },
                       "errors": [
                         {
-                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                         },
                         {
                           "location": {
@@ -441,13 +441,13 @@
                             "column": 23,
                             "line": 150
                           },
-                          "message": "Error: locator.fill: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[placeholder*=\"Search\"]')\u001b[22m\n\n\n  148 |     // Search by school name\n  149 |     const searchInput = page.locator('input[placeholder*=\"Search\"]');\n> 150 |     await searchInput.fill(\"Oakridge\");\n      |                       ^\n  151 |\n  152 |     // Wait for filtered results\n  153 |     await page.waitForTimeout(1000);\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:150:23"
+                          "message": "Error: locator.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('input[placeholder*=\"Search\"]')\u001b[22m\n\n\n  148 |     // Search by school name\n  149 |     const searchInput = page.locator('input[placeholder*=\"Search\"]');\n> 150 |     await searchInput.fill(\"Oakridge\");\n      |                       ^\n  151 |\n  152 |     // Wait for filtered results\n  153 |     await page.waitForTimeout(1000);\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:150:23"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:47:54.824Z",
+                      "startTime": "2026-04-15T11:18:08.474Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -482,7 +482,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -490,16 +490,16 @@
                   "results": [
                     {
                       "workerIndex": 4,
-                      "parallelIndex": 0,
+                      "parallelIndex": 1,
                       "status": "timedOut",
-                      "duration": 83356,
+                      "duration": 42455,
                       "error": {
-                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                       },
                       "errors": [
                         {
-                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                         },
                         {
                           "location": {
@@ -507,13 +507,13 @@
                             "column": 16,
                             "line": 165
                           },
-                          "message": "Error: page.click: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Filters\")')\u001b[22m\n\n\n  163 |\n  164 |     // Open filters\n> 165 |     await page.click('button:has-text(\"Filters\")');\n      |                ^\n  166 |\n  167 |     // Filter by status\n  168 |     await page.click('text=Active');\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:165:16"
+                          "message": "Error: page.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Filters\")')\u001b[22m\n\n\n  163 |\n  164 |     // Open filters\n> 165 |     await page.click('button:has-text(\"Filters\")');\n      |                ^\n  166 |\n  167 |     // Filter by status\n  168 |     await page.click('text=Active');\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:165:16"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:48:19.631Z",
+                      "startTime": "2026-04-15T11:18:16.813Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -548,7 +548,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -556,30 +556,33 @@
                   "results": [
                     {
                       "workerIndex": 6,
-                      "parallelIndex": 1,
+                      "parallelIndex": 0,
                       "status": "timedOut",
-                      "duration": 86947,
+                      "duration": 43209,
                       "error": {
-                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:9:8",
+                        "location": {
+                          "file": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts",
+                          "column": 8,
+                          "line": 9
+                        },
+                        "snippet": "\u001b[0m \u001b[90m  7 |\u001b[39m\n \u001b[90m  8 |\u001b[39m test\u001b[33m.\u001b[39mdescribe(\u001b[32m\"Schools Management\"\u001b[39m\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  9 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m loginAsSuperAdmin(page)\u001b[33m;\u001b[39m\n \u001b[90m 11 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/super-admin/schools\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 12 |\u001b[39m   })\u001b[33m;\u001b[39m\u001b[0m"
                       },
                       "errors": [
                         {
-                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
-                        },
-                        {
                           "location": {
                             "file": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts",
-                            "column": 65,
-                            "line": 181
+                            "column": 8,
+                            "line": 9
                           },
-                          "message": "Error: locator.click: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('tbody tr').first().locator('a').first()\u001b[22m\n\n\n  179 |\n  180 |     // Click first school's view details\n> 181 |     await page.locator(\"tbody tr\").first().locator(\"a\").first().click();\n      |                                                                 ^\n  182 |\n  183 |     // Verify Overview tab loads\n  184 |     await page.waitForSelector('text=Overview', { timeout: 5000 });\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:181:65"
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n   7 |\n   8 | test.describe(\"Schools Management\", () => {\n>  9 |   test.beforeEach(async ({ page }) => {\n     |        ^\n  10 |     await loginAsSuperAdmin(page);\n  11 |     await page.goto(\"/super-admin/schools\");\n  12 |   });\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:9:8"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:49:47.343Z",
+                      "startTime": "2026-04-15T11:19:14.577Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -597,7 +600,12 @@
                           "contentType": "text/markdown",
                           "path": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\test-results\\super-admin-functional-sch-cac80-8---School-details-overview-chromium\\error-context.md"
                         }
-                      ]
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts",
+                        "column": 8,
+                        "line": 9
+                      }
                     }
                   ],
                   "status": "unexpected"
@@ -622,7 +630,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -630,20 +638,17 @@
                   "results": [
                     {
                       "workerIndex": 7,
-                      "parallelIndex": 0,
-                      "status": "failed",
-                      "duration": 23680,
+                      "parallelIndex": 1,
+                      "status": "timedOut",
+                      "duration": 35201,
                       "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Processing').or(locator('text=Uploaded'))\nExpected: visible\nError: strict mode violation: locator('text=Processing').or(locator('text=Uploaded')) resolved to 3 elements:\n    1) <p class=\"text-sm text-text-secondary\">Manage master books, processing, pre-generation, …</p> aka getByText('Manage master books,')\n    2) <span class=\"hidden sm:inline\">Processing Queue</span> aka getByRole('button', { name: 'Processing Queue' })\n    3) <h3 class=\"font-medium text-text-primary\">Processing Pipeline</h3> aka getByRole('heading', { name: 'Processing Pipeline' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Processing').or(locator('text=Uploaded'))\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Processing').or(locator('text=Uploaded'))\nExpected: visible\nError: strict mode violation: locator('text=Processing').or(locator('text=Uploaded')) resolved to 3 elements:\n    1) <p class=\"text-sm text-text-secondary\">Manage master books, processing, pre-generation, …</p> aka getByText('Manage master books,')\n    2) <span class=\"hidden sm:inline\">Processing Queue</span> aka getByRole('button', { name: 'Processing Queue' })\n    3) <h3 class=\"font-medium text-text-primary\">Processing Pipeline</h3> aka getByRole('heading', { name: 'Processing Pipeline' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Processing').or(locator('text=Uploaded'))\u001b[22m\n\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:206:85",
-                        "location": {
-                          "file": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts",
-                          "column": 85,
-                          "line": 206
-                        },
-                        "snippet": "\u001b[0m \u001b[90m 204 |\u001b[39m\n \u001b[90m 205 |\u001b[39m     \u001b[90m// Verify upload started\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 206 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m\"text=Processing\"\u001b[39m)\u001b[33m.\u001b[39mor(page\u001b[33m.\u001b[39mlocator(\u001b[32m\"text=Uploaded\"\u001b[39m)))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 207 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 208 |\u001b[39m\n \u001b[90m 209 |\u001b[39m   test(\u001b[32m\"1.10 - Pre-generation trigger\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                       },
                       "errors": [
+                        {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
                         {
                           "location": {
                             "file": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts",
@@ -656,7 +661,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:50:26.922Z",
+                      "startTime": "2026-04-15T11:19:22.099Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -674,12 +679,7 @@
                           "contentType": "text/markdown",
                           "path": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\test-results\\super-admin-functional-sch-b2085-line-1-9---Book-upload-flow-chromium\\error-context.md"
                         }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts",
-                        "column": 85,
-                        "line": 206
-                      }
+                      ]
                     }
                   ],
                   "status": "unexpected"
@@ -696,7 +696,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -704,14 +704,14 @@
                   "results": [
                     {
                       "workerIndex": 8,
-                      "parallelIndex": 0,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 13340,
+                      "duration": 8898,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:51:20.214Z",
+                      "startTime": "2026-04-15T11:20:17.266Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -738,24 +738,24 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 8,
+                      "workerIndex": 9,
                       "parallelIndex": 0,
                       "status": "timedOut",
-                      "duration": 85734,
+                      "duration": 35583,
                       "error": {
-                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                       },
                       "errors": [
                         {
-                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                         },
                         {
                           "location": {
@@ -763,15 +763,20 @@
                             "column": 16,
                             "line": 243
                           },
-                          "message": "Error: page.fill: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[name=\"title\"]')\u001b[22m\n\n\n  241 |\n  242 |     // Fill notification\n> 243 |     await page.fill('[name=\"title\"]', \"Test Notification\");\n      |                ^\n  244 |     await page.fill('[name=\"body\"]', \"This is a test notification for all schools.\");\n  245 |\n  246 |     // Select all schools\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:243:16"
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[name=\"title\"]')\u001b[22m\n\n\n  241 |\n  242 |     // Fill notification\n> 243 |     await page.fill('[name=\"title\"]', \"Test Notification\");\n      |                ^\n  244 |     await page.fill('[name=\"body\"]', \"This is a test notification for all schools.\");\n  245 |\n  246 |     // Select all schools\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:243:16"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:51:35.991Z",
+                      "startTime": "2026-04-15T11:20:16.913Z",
                       "annotations": [],
                       "attachments": [
+                        {
+                          "name": "screenshot",
+                          "contentType": "image/png",
+                          "path": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\test-results\\super-admin-functional-sch-5e4f7-otification-send-to-schools-chromium\\test-failed-1.png"
+                        },
                         {
                           "name": "video",
                           "contentType": "video/webm",
@@ -799,24 +804,24 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 9,
+                      "workerIndex": 8,
                       "parallelIndex": 1,
                       "status": "timedOut",
-                      "duration": 82808,
+                      "duration": 37148,
                       "error": {
-                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                       },
                       "errors": [
                         {
-                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                         },
                         {
                           "location": {
@@ -824,13 +829,13 @@
                             "column": 16,
                             "line": 270
                           },
-                          "message": "Error: page.fill: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[name=\"scheduled_date\"]')\u001b[22m\n\n\n  268 |     const dateStr = futureDate.toISOString().split(\"T\")[0];\n  269 |\n> 270 |     await page.fill('[name=\"scheduled_date\"]', dateStr);\n      |                ^\n  271 |     await page.fill('[name=\"title\"]', \"Scheduled Test\");\n  272 |\n  273 |     // Save as scheduled\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:270:16"
+                          "message": "Error: page.fill: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[name=\"scheduled_date\"]')\u001b[22m\n\n\n  268 |     const dateStr = futureDate.toISOString().split(\"T\")[0];\n  269 |\n> 270 |     await page.fill('[name=\"scheduled_date\"]', dateStr);\n      |                ^\n  271 |     await page.fill('[name=\"title\"]', \"Scheduled Test\");\n  272 |\n  273 |     // Save as scheduled\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:270:16"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:51:47.187Z",
+                      "startTime": "2026-04-15T11:20:26.795Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -865,7 +870,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -873,16 +878,16 @@
                   "results": [
                     {
                       "workerIndex": 10,
-                      "parallelIndex": 0,
+                      "parallelIndex": 1,
                       "status": "timedOut",
-                      "duration": 76649,
+                      "duration": 38502,
                       "error": {
-                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                       },
                       "errors": [
                         {
-                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                         },
                         {
                           "location": {
@@ -890,13 +895,13 @@
                             "column": 16,
                             "line": 288
                           },
-                          "message": "Error: page.click: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Create Template\")')\u001b[22m\n\n\n  286 |\n  287 |     // Create template\n> 288 |     await page.click('button:has-text(\"Create Template\")');\n      |                ^\n  289 |     await page.fill('[name=\"template_name\"]', `Test Template ${Date.now()}`);\n  290 |     await page.fill('[name=\"template_content\"]', \"Hello {{school_name}}, this is {{notification_content}}\");\n  291 |     await page.click('button:has-text(\"Save\")');\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:288:16"
+                          "message": "Error: page.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button:has-text(\"Create Template\")')\u001b[22m\n\n\n  286 |\n  287 |     // Create template\n> 288 |     await page.click('button:has-text(\"Create Template\")');\n      |                ^\n  289 |     await page.fill('[name=\"template_name\"]', `Test Template ${Date.now()}`);\n  290 |     await page.fill('[name=\"template_content\"]', \"Hello {{school_name}}, this is {{notification_content}}\");\n  291 |     await page.click('button:has-text(\"Save\")');\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:288:16"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:53:26.515Z",
+                      "startTime": "2026-04-15T11:21:17.891Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -939,7 +944,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -947,9 +952,9 @@
                   "results": [
                     {
                       "workerIndex": 11,
-                      "parallelIndex": 1,
+                      "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 37273,
+                      "duration": 14097,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Revenue Overview')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Revenue Overview')\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Revenue Overview')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Revenue Overview')\u001b[22m\n\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:304:57",
@@ -973,7 +978,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:53:39.827Z",
+                      "startTime": "2026-04-15T11:21:18.987Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1013,7 +1018,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -1021,16 +1026,16 @@
                   "results": [
                     {
                       "workerIndex": 12,
-                      "parallelIndex": 1,
+                      "parallelIndex": 0,
                       "status": "timedOut",
-                      "duration": 75945,
+                      "duration": 37838,
                       "error": {
-                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                       },
                       "errors": [
                         {
-                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                         },
                         {
                           "location": {
@@ -1038,13 +1043,13 @@
                             "column": 16,
                             "line": 313
                           },
-                          "message": "Error: page.click: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=School Billing')\u001b[22m\n\n\n  311 |\n  312 |     // Navigate to School Billing\n> 313 |     await page.click('text=School Billing');\n      |                ^\n  314 |     await expect(page.locator(\"text=School Billing\")).toBeVisible();\n  315 |   });\n  316 |\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:313:16"
+                          "message": "Error: page.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=School Billing')\u001b[22m\n\n\n  311 |\n  312 |     // Navigate to School Billing\n> 313 |     await page.click('text=School Billing');\n      |                ^\n  314 |     await expect(page.locator(\"text=School Billing\")).toBeVisible();\n  315 |   });\n  316 |\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:313:16"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:54:43.625Z",
+                      "startTime": "2026-04-15T11:21:53.194Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1079,7 +1084,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -1087,16 +1092,16 @@
                   "results": [
                     {
                       "workerIndex": 13,
-                      "parallelIndex": 0,
+                      "parallelIndex": 1,
                       "status": "timedOut",
-                      "duration": 80216,
+                      "duration": 39553,
                       "error": {
-                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                       },
                       "errors": [
                         {
-                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                         },
                         {
                           "location": {
@@ -1104,13 +1109,13 @@
                             "column": 16,
                             "line": 322
                           },
-                          "message": "Error: page.click: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=AI Cost Monitor')\u001b[22m\n\n\n  320 |\n  321 |     // Navigate to AI Cost Monitor\n> 322 |     await page.click('text=AI Cost Monitor');\n      |                ^\n  323 |     await expect(page.locator(\"text=AI Cost Monitor\")).toBeVisible();\n  324 |   });\n  325 |\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:322:16"
+                          "message": "Error: page.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=AI Cost Monitor')\u001b[22m\n\n\n  320 |\n  321 |     // Navigate to AI Cost Monitor\n> 322 |     await page.click('text=AI Cost Monitor');\n      |                ^\n  323 |     await expect(page.locator(\"text=AI Cost Monitor\")).toBeVisible();\n  324 |   });\n  325 |\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:322:16"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:55:16.076Z",
+                      "startTime": "2026-04-15T11:22:10.702Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1145,7 +1150,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -1153,16 +1158,16 @@
                   "results": [
                     {
                       "workerIndex": 14,
-                      "parallelIndex": 1,
+                      "parallelIndex": 0,
                       "status": "timedOut",
-                      "duration": 83562,
+                      "duration": 42539,
                       "error": {
-                        "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                       },
                       "errors": [
                         {
-                          "message": "\u001b[31mTest timeout of 60000ms exceeded.\u001b[39m"
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                         },
                         {
                           "location": {
@@ -1170,13 +1175,13 @@
                             "column": 16,
                             "line": 331
                           },
-                          "message": "Error: page.click: Test timeout of 60000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Pricing')\u001b[22m\n\n\n  329 |\n  330 |     // Navigate to Pricing\n> 331 |     await page.click('text=Pricing');\n      |                ^\n  332 |     await expect(page.locator(\"text=Pricing\")).toBeVisible();\n  333 |   });\n  334 | });\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:331:16"
+                          "message": "Error: page.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('text=Pricing')\u001b[22m\n\n\n  329 |\n  330 |     // Navigate to Pricing\n> 331 |     await page.click('text=Pricing');\n      |                ^\n  332 |     await expect(page.locator(\"text=Pricing\")).toBeVisible();\n  333 |   });\n  334 | });\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:331:16"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:56:27.629Z",
+                      "startTime": "2026-04-15T11:22:37.736Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1219,7 +1224,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -1227,14 +1232,14 @@
                   "results": [
                     {
                       "workerIndex": 15,
-                      "parallelIndex": 0,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 36224,
+                      "duration": 12846,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:57:14.786Z",
+                      "startTime": "2026-04-15T11:23:03.589Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1253,7 +1258,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -1261,14 +1266,14 @@
                   "results": [
                     {
                       "workerIndex": 15,
-                      "parallelIndex": 0,
+                      "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 16265,
+                      "duration": 12610,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:57:54.699Z",
+                      "startTime": "2026-04-15T11:23:17.390Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1287,7 +1292,7 @@
               "tags": [],
               "tests": [
                 {
-                  "timeout": 60000,
+                  "timeout": 30000,
                   "annotations": [],
                   "expectedStatus": "passed",
                   "projectId": "chromium",
@@ -1295,9 +1300,9 @@
                   "results": [
                     {
                       "workerIndex": 15,
-                      "parallelIndex": 0,
+                      "parallelIndex": 1,
                       "status": "failed",
-                      "duration": 11297,
+                      "duration": 10848,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Admin Accounts')\nExpected: visible\nError: strict mode violation: locator('text=Admin Accounts') resolved to 2 elements:\n    1) <p class=\"mt-1 text-sm text-text-secondary\">Monitor system health, manage admin accounts, and…</p> aka getByText('Monitor system health, manage')\n    2) <button class=\"btn-touch flex items-center gap-2 whitespace-nowrap border-b-2 px-4 py-3 text-sm font-medium transition-colors border-transparent text-text-muted hover:border-border hover:text-text-primary\">…</button> aka getByRole('button', { name: 'Admin Accounts' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Admin Accounts')\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Admin Accounts')\nExpected: visible\nError: strict mode violation: locator('text=Admin Accounts') resolved to 2 elements:\n    1) <p class=\"mt-1 text-sm text-text-secondary\">Monitor system health, manage admin accounts, and…</p> aka getByText('Monitor system health, manage')\n    2) <button class=\"btn-touch flex items-center gap-2 whitespace-nowrap border-b-2 px-4 py-3 text-sm font-medium transition-colors border-transparent text-text-muted hover:border-border hover:text-text-primary\">…</button> aka getByRole('button', { name: 'Admin Accounts' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Admin Accounts')\u001b[22m\n\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:360:55",
@@ -1321,7 +1326,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T10:58:11.104Z",
+                      "startTime": "2026-04-15T11:23:30.160Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1362,8 +1367,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-04-15T10:42:54.351Z",
-    "duration": 963097.552,
+    "startTime": "2026-04-15T11:16:14.487Z",
+    "duration": 458887.979,
     "expected": 4,
     "skipped": 0,
     "unexpected": 16,

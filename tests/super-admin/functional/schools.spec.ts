@@ -355,8 +355,10 @@ test.describe("Operations", () => {
     await loginAsSuperAdmin(page);
     await page.goto("/super-admin/operations");
 
-    // Navigate to Admin Accounts
-    await page.click('text=Admin Accounts');
-    await expect(page.locator("text=Admin Accounts")).toBeVisible();
+    // Navigate to Admin Accounts tab
+    await page.getByRole('button', { name: 'Admin Accounts' }).click();
+
+    // Verify the Admins tab content loaded
+    await expect(page.getByText("Add Admin")).toBeVisible({ timeout: 10000 });
   });
 });
