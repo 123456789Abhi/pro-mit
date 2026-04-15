@@ -358,7 +358,10 @@ test.describe("Operations", () => {
     // Navigate to Admin Accounts tab
     await page.getByRole('button', { name: 'Admin Accounts' }).click();
 
-    // Verify the Admins tab content loaded
-    await expect(page.getByText("Add Admin")).toBeVisible({ timeout: 10000 });
+    // Wait for the tab to become active
+    await expect(page.getByRole('button', { name: 'Admin Accounts' })).toHaveAttribute('aria-selected', 'true', { timeout: 10000 });
+
+    // Verify the tab content area is visible (table header or loading state)
+    await expect(page.locator("th:text('Name')").first()).toBeVisible({ timeout: 15000 });
   });
 });

@@ -6,8 +6,8 @@
 
 # Test info
 
-- Name: super-admin\functional\schools.spec.ts >> Schools Management >> 1.6 - School search functionality
-- Location: tests\super-admin\functional\schools.spec.ts:145:7
+- Name: super-admin\functional\schools.spec.ts >> Schools Management >> 1.4 - Invite vs direct creation
+- Location: tests\super-admin\functional\schools.spec.ts:94:7
 
 # Error details
 
@@ -16,26 +16,159 @@ Test timeout of 30000ms exceeded.
 ```
 
 ```
-Error: locator.fill: Test timeout of 30000ms exceeded.
+Error: page.click: Test timeout of 30000ms exceeded.
 Call log:
-  - waiting for locator('input[placeholder*="Search"]')
+  - waiting for locator('text=Send Invite')
 
 ```
 
 # Page snapshot
 
 ```yaml
-- generic [active] [ref=e1]:
-  - generic [ref=e3]:
-    - heading "404" [level=1] [ref=e4]
-    - heading "This page could not be found." [level=2] [ref=e6]
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - complementary [ref=e3]:
+      - link "L Lernen Super Admin" [ref=e5] [cursor=pointer]:
+        - /url: /super-admin
+        - generic [ref=e7]: L
+        - generic [ref=e8]:
+          - generic [ref=e9]: Lernen
+          - generic [ref=e10]: Super Admin
+      - navigation [ref=e11]:
+        - link "Command Center" [ref=e12] [cursor=pointer]:
+          - /url: /super-admin/command-center
+          - img [ref=e13]
+          - generic [ref=e18]: Command Center
+        - link "Schools" [ref=e19] [cursor=pointer]:
+          - /url: /super-admin/schools
+          - img [ref=e20]
+          - generic [ref=e24]: Schools
+          - img [ref=e25]
+        - link "Content Pipeline" [ref=e27] [cursor=pointer]:
+          - /url: /super-admin/content
+          - img [ref=e28]
+          - generic [ref=e31]: Content Pipeline
+        - link "Communicate" [ref=e32] [cursor=pointer]:
+          - /url: /super-admin/communicate
+          - img [ref=e33]
+          - generic [ref=e35]: Communicate
+        - link "Financials" [ref=e36] [cursor=pointer]:
+          - /url: /super-admin/financials
+          - img [ref=e37]
+          - generic [ref=e40]: Financials
+        - link "Operations" [ref=e41] [cursor=pointer]:
+          - /url: /super-admin/operations
+          - img [ref=e42]
+          - generic [ref=e45]: Operations
+      - generic [ref=e47]: Lernen v1.0 — Super Admin
+    - main [ref=e48]:
+      - generic [ref=e49]:
+        - generic [ref=e50]:
+          - generic [ref=e51]:
+            - heading "Schools" [level=1] [ref=e52]
+            - paragraph [ref=e53]: Manage all registered schools, onboarding, and settings
+          - button "Add New School" [active] [ref=e54] [cursor=pointer]:
+            - img [ref=e55]
+            - text: Add New School
+        - generic [ref=e56]:
+          - generic [ref=e57]:
+            - button "All Schools" [ref=e58] [cursor=pointer]
+            - button "Add New School" [ref=e59] [cursor=pointer]
+            - button "School Details" [disabled] [ref=e60]
+          - generic [ref=e62]:
+            - generic [ref=e63]:
+              - generic [ref=e65]: "1"
+              - generic [ref=e68]: "2"
+              - generic [ref=e71]: "3"
+              - generic [ref=e74]: "4"
+              - generic [ref=e77]: "5"
+              - generic [ref=e80]: "6"
+              - generic [ref=e83]: "7"
+            - generic [ref=e84]:
+              - generic [ref=e85]:
+                - heading "School Info" [level=3] [ref=e86]
+                - paragraph [ref=e87]: Basic school details
+              - generic [ref=e89]:
+                - generic [ref=e90]:
+                  - text: School Name *
+                  - textbox "School Name *" [ref=e91]:
+                    - /placeholder: Enter school name
+                - generic [ref=e92]:
+                  - text: Board *
+                  - combobox [ref=e93] [cursor=pointer]:
+                    - generic: CBSE
+                    - img [ref=e94]
+                - generic [ref=e96]:
+                  - text: Academic Year
+                  - textbox "Academic Year" [ref=e97]: 2025-2026
+                - generic [ref=e98]:
+                  - text: City *
+                  - textbox "City *" [ref=e99]:
+                    - /placeholder: Enter city
+                - generic [ref=e100]:
+                  - text: Region *
+                  - combobox [ref=e101] [cursor=pointer]:
+                    - generic: Select region
+                    - img [ref=e102]
+            - generic [ref=e104]:
+              - button "Previous" [disabled]
+              - button "Next" [ref=e105] [cursor=pointer]
   - region "Notifications alt+T"
-  - alert [ref=e7]
+  - alert [ref=e106]
 ```
 
 # Test source
 
 ```ts
+  1   | /**
+  2   |  * Category 1: Functional Testing (20 tests)
+  3   |  * Tests core user flows for the Super Admin Schools panel
+  4   |  */
+  5   | import { test, expect } from "@playwright/test";
+  6   | import { loginAsSuperAdmin, generateTestSchool, SCHOOL_STATUSES } from "../shared/fixtures";
+  7   | 
+  8   | test.describe("Schools Management", () => {
+  9   |   test.beforeEach(async ({ page }) => {
+  10  |     await loginAsSuperAdmin(page);
+  11  |     await page.goto("/super-admin/schools");
+  12  |   });
+  13  | 
+  14  |   test("1.1 - School creation via onboarding wizard", async ({ page }) => {
+  15  |     // Navigate to Add New School tab
+  16  |     await page.click('text=Add New School');
+  17  | 
+  18  |     // Step 1: School Info
+  19  |     const school = generateTestSchool();
+  20  |     await page.fill('[name="school_name"]', school.name);
+  21  |     await page.selectOption('[name="board"]', school.board);
+  22  |     await page.fill('[name="city"]', school.city);
+  23  |     await page.fill('[name="region"]', school.region);
+  24  |     await page.click('text=Next');
+  25  | 
+  26  |     // Step 2: Principal (invite option)
+  27  |     await page.click('text=Send Invite');
+  28  |     await page.fill('[name="principal_name"]', "Test Principal");
+  29  |     await page.fill('[name="principal_email"]', `principal.${Date.now()}@test.com`);
+  30  |     await page.fill('[name="principal_phone"]', "9876543210");
+  31  |     await page.click('text=Next');
+  32  | 
+  33  |     // Step 3: Subscription
+  34  |     await page.click('text=Trial');
+  35  |     await page.click('text=Next');
+  36  | 
+  37  |     // Step 4: AI Budget (defaults)
+  38  |     await page.click('text=Next');
+  39  | 
+  40  |     // Step 5: Branding (defaults)
+  41  |     await page.click('text=Next');
+  42  | 
+  43  |     // Step 6: Content (defaults)
+  44  |     await page.click('text=Next');
+  45  | 
+  46  |     // Step 7: Review & Create
+  47  |     await page.click('button:has-text("Create School")');
+  48  | 
+  49  |     // Verify school appears in list
   50  |     await page.waitForSelector(`text=${school.name}`, { timeout: 10000 });
   51  |     await expect(page.locator(`text=${school.name}`).first()).toBeVisible();
   52  |   });
@@ -85,7 +218,8 @@ Call log:
   96  | 
   97  |     // Test invite option
   98  |     const inviteEmail = `invite.${Date.now()}@test.com`;
-  99  |     await page.click('text=Send Invite');
+> 99  |     await page.click('text=Send Invite');
+      |                ^ Error: page.click: Test timeout of 30000ms exceeded.
   100 |     await page.fill('[name="principal_name"]', "Invite Principal");
   101 |     await page.fill('[name="principal_email"]', inviteEmail);
   102 |     await page.click('button:has-text("Send Invite")');
@@ -136,8 +270,7 @@ Call log:
   147 | 
   148 |     // Search by school name
   149 |     const searchInput = page.locator('input[placeholder*="Search"]');
-> 150 |     await searchInput.fill("Oakridge");
-      |                       ^ Error: locator.fill: Test timeout of 30000ms exceeded.
+  150 |     await searchInput.fill("Oakridge");
   151 | 
   152 |     // Wait for filtered results
   153 |     await page.waitForTimeout(1000);
@@ -187,55 +320,4 @@ Call log:
   197 |     // Upload a PDF file
   198 |     const fileInput = page.locator('input[type="file"]');
   199 |     await fileInput.setInputFiles({
-  200 |       name: "test-book.pdf",
-  201 |       mimeType: "application/pdf",
-  202 |       buffer: Buffer.from("mock pdf content"),
-  203 |     });
-  204 | 
-  205 |     // Verify upload started
-  206 |     await expect(page.locator("text=Processing").or(page.locator("text=Uploaded"))).toBeVisible({ timeout: 5000 });
-  207 |   });
-  208 | 
-  209 |   test("1.10 - Pre-generation trigger", async ({ page }) => {
-  210 |     await loginAsSuperAdmin(page);
-  211 |     await page.goto("/super-admin/content");
-  212 | 
-  213 |     // Navigate to Library tab
-  214 |     await page.click('text=Library');
-  215 | 
-  216 |     // Click pre-generate on a book
-  217 |     const preGenButton = page.locator('button:has-text("Pre-generate")').first();
-  218 |     if (await preGenButton.isVisible()) {
-  219 |       await preGenButton.click();
-  220 | 
-  221 |       // Select content types
-  222 |       await page.click('text=Notes');
-  223 |       await page.click('text=Quizzes');
-  224 | 
-  225 |       // Trigger
-  226 |       await page.click('button:has-text("Generate")');
-  227 | 
-  228 |       // Verify queued
-  229 |       await expect(page.locator("text=Queued for generation")).toBeVisible({ timeout: 5000 });
-  230 |     }
-  231 |   });
-  232 | });
-  233 | 
-  234 | test.describe("Communicate", () => {
-  235 |   test("1.11 - Notification send to schools", async ({ page }) => {
-  236 |     await loginAsSuperAdmin(page);
-  237 |     await page.goto("/super-admin/communicate");
-  238 | 
-  239 |     // Compose new notification
-  240 |     await page.click('button:has-text("Compose")');
-  241 | 
-  242 |     // Fill notification
-  243 |     await page.fill('[name="title"]', "Test Notification");
-  244 |     await page.fill('[name="body"]', "This is a test notification for all schools.");
-  245 | 
-  246 |     // Select all schools
-  247 |     await page.click('text=All Schools');
-  248 | 
-  249 |     // Send
-  250 |     await page.click('button:has-text("Send Notification")');
 ```
