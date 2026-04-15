@@ -13,8 +13,8 @@ export default defineConfig({
     ["html", { outputFolder: "playwright-report" }],
     ["json", { outputFile: "playwright-results.json" }],
   ],
-  // Run seed script once before all tests (uses .mjs to avoid tsx CJS/top-level-await issue)
-  globalSetup: "./scripts/seed-test-data.mjs",
+  // Run seed script once before all tests (via global-setup.ts which loads .env.local)
+  globalSetup: "./tests/global-setup.ts",
   use: {
     baseURL: process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3000",
     trace: "on-first-retry",

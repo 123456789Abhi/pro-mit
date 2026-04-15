@@ -13,7 +13,7 @@ import { readFileSync } from "fs";
 
 // ─── Config ────────────────────────────────────────────────────────────────────
 
-// Parse .env.local directly (avoids process.env issues)
+// Parse .env.local directly and set on process.env (required for Supabase auth)
 const env = {};
 try {
   for (const line of readFileSync(".env.local", "utf8").split("\n")) {
@@ -21,15 +21,19 @@ try {
     if (t && !t.startsWith("#")) {
       const eqIdx = t.indexOf("=");
       if (eqIdx > 0) {
-        env[t.substring(0, eqIdx)] = t.substring(eqIdx + 1);
+        const key = t.substring(0, eqIdx);
+        const value = t.substring(eqIdx + 1);
+        // Always set — .env.local takes precedence
+        process.env[key] = value;
+        env[key] = value;
       }
     }
   }
 } catch {
-  console.warn("Could not read .env.local — falling back to env vars");
+  console.warn("Could not read .env.local — using process.env");
 }
 
-const SUPABASE_URL = env.NEXT_PUBLIC_SUPABASE_URL || env.SUPABASE_URL || "https://czhrypodwcjyvfwsofit.supabase.co";
+const SUPABASE_URL = env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "https://czhrypodwcjyvfwsofit.supabase.co";
 const SERVICE_ROLE_KEY = env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 
 // ─── REST helpers ──────────────────────────────────────────────────────────────

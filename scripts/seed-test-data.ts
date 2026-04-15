@@ -1,6 +1,7 @@
 /**
  * Comprehensive seed script for E2E tests.
- * Run: npx tsx scripts/seed-test-data.ts
+ * Run: node --env-file=.env.local scripts/seed-test-data.mjs
+ * Or:   npx tsx --env-file=.env.local scripts/seed-test-data.ts
  *
  * Creates all test users (super_admin, principal, teacher, student) plus
  * school data (Oakridge school, classes, subscription).
@@ -20,14 +21,13 @@ function loadEnvLocal() {
         if (eqIdx > 0) {
           const key = trimmed.substring(0, eqIdx);
           const value = trimmed.substring(eqIdx + 1);
-          if (!(key in process.env)) {
-            process.env[key] = value;
-          }
+          // Always load from .env.local — it takes precedence
+          process.env[key] = value;
         }
       }
     }
   } catch {
-    // .env.local not found — use defaults or environment
+    // .env.local not found — rely on process.env
   }
 }
 

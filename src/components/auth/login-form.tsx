@@ -7,7 +7,7 @@ import { Eye, EyeOff, Mail, Lock, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input, Label } from "@/components/ui/input";
 import { login } from "@/lib/supabase/auth-actions";
-import { createSupabaseBrowser } from "@/lib/supabase";
+import { createSupabaseBrowser } from "@/lib/supabase/client";
 
 const ERROR_MESSAGES: Record<string, string> = {
   auth_callback_failed: "Authentication failed. Please try again.",

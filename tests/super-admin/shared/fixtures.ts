@@ -8,30 +8,74 @@ export interface TestFixtures {
   apiBaseUrl: string;
 }
 
-// Auth helper for super admin — uses the test login route which sets
-// the auth cookie with correct base64-URL encoding that @supabase/ssr v0.5.2 expects.
-// The route signs in via Supabase Auth and the onAuthStateChange callback sets
-// the cookie via applyServerStorage() with the base64- prefix, matching what
-// createServerClient.getItem() looks for in middleware.
+// Auth helper for super admin — navigates to the test-auth API route.
+// The route is excluded from middleware (pathname.startsWith("/api")).
+// It signs in via Supabase and redirects to the target panel with a valid JWT cookie.
+// Subsequent requests work because the cookie contains a real JWT that getUser() validates.
 export async function loginAsSuperAdmin(page: Page) {
   const baseUrl = process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3000";
 
-  // Navigate to the test login route — this signs in and sets the cookie
-  // with correct encoding via onAuthStateChange → applyServerStorage()
-  await page.goto(`${baseUrl}/api/auth/test-login?role=super_admin`, {
+  await page.goto(`${baseUrl}/api/auth/test-auth?role=super_admin`, {
     waitUntil: "networkidle",
   });
 
   const url = page.url();
 
   if (!url.includes("/super-admin")) {
-    // Check for error in URL
     const error = new URL(url).searchParams.get("error");
     if (error) {
       throw new Error(`Test login failed: ${error}. URL: ${url}`);
     }
     throw new Error(
       `Test login failed — expected /super-admin in URL but got: ${url}`
+    );
+  }
+}
+
+// Auth helper for principal role
+export async function loginAsPrincipal(page: Page) {
+  const baseUrl = process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3000";
+
+  await page.goto(`${baseUrl}/api/auth/test-auth?role=principal`, {
+    waitUntil: "networkidle",
+  });
+
+  const url = page.url();
+  if (!url.includes("/principal")) {
+    throw new Error(
+      `Principal login failed — expected /principal in URL but got: ${url}`
+    );
+  }
+}
+
+// Auth helper for teacher role
+export async function loginAsTeacher(page: Page) {
+  const baseUrl = process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3000";
+
+  await page.goto(`${baseUrl}/api/auth/test-auth?role=teacher`, {
+    waitUntil: "networkidle",
+  });
+
+  const url = page.url();
+  if (!url.includes("/teacher")) {
+    throw new Error(
+      `Teacher login failed — expected /teacher in URL but got: ${url}`
+    );
+  }
+}
+
+// Auth helper for student role
+export async function loginAsStudent(page: Page) {
+  const baseUrl = process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3000";
+
+  await page.goto(`${baseUrl}/api/auth/test-auth?role=student`, {
+    waitUntil: "networkidle",
+  });
+
+  const url = page.url();
+  if (!url.includes("/student")) {
+    throw new Error(
+      `Student login failed — expected /student in URL but got: ${url}`
     );
   }
 }

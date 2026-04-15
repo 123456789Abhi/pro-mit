@@ -8,7 +8,7 @@ import { readFileSync } from "fs";
 
 const execFile = promisify(require("child_process").execFile);
 
-// Load env vars so the mjs seed script has access
+// Load env vars so the mjs seed script has access to SERVICE_ROLE_KEY
 try {
   const content = readFileSync(".env.local", "utf8");
   for (const line of content.split("\n")) {
@@ -18,9 +18,8 @@ try {
       if (eqIdx > 0) {
         const key = t.substring(0, eqIdx);
         const value = t.substring(eqIdx + 1);
-        if (!(key in process.env)) {
-          process.env[key] = value;
-        }
+        // Always load from .env.local — it takes precedence
+        process.env[key] = value;
       }
     }
   }

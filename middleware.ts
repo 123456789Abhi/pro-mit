@@ -71,9 +71,11 @@ export async function middleware(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet: CookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }: { name: string; value: string; options?: CookieOptions }) => {
-            response.cookies.set(name, value, options);
-          });
+          cookiesToSet.forEach(
+            ({ name, value, options }: { name: string; value: string; options?: CookieOptions }) => {
+              response.cookies.set(name, value, options);
+            }
+          );
         },
       },
     }
@@ -82,12 +84,14 @@ export async function middleware(request: NextRequest) {
   // ── 1. Check authentication ──
   // CRITICAL: getUser() validates with Supabase Auth server. Cannot be spoofed.
   // NEVER use getSession() — it only reads local JWT without server verification.
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
 
   // Public routes: allow access, redirect to home if already authenticated
   if (PUBLIC_ROUTES.some((route) => pathname.startsWith(route))) {
     if (user && !authError) {
-      // Already authenticated — get role and redirect to their panel
       const { data: userData } = await supabase
         .from("users")
         .select("role, deleted_at")
@@ -121,7 +125,6 @@ export async function middleware(request: NextRequest) {
 
   // Not authenticated — redirect to login
   if (!user || authError) {
-    // Log for debugging — auth failures should never be silent
     console.error("[Auth] getUser() failed:", {
       hasUser: !!user,
       authError: authError?.message,
@@ -142,19 +145,21 @@ export async function middleware(request: NextRequest) {
     .single();
 
   if (userError || !userData) {
-    // User exists in auth but not in public.users — broken state
     console.error("[Auth] User in auth but not in public.users:", {
       userId: user.id,
       userError: userError?.message,
     });
-    return NextResponse.redirect(new URL("/auth/login?error=account_not_found", request.url));
+    return NextResponse.redirect(
+      new URL("/auth/login?error=account_not_found", request.url)
+    );
   }
 
   // ── 3. Check account status ──
   if (userData.deleted_at) {
-    // Account deactivated
     await supabase.auth.signOut();
-    return NextResponse.redirect(new URL("/auth/login?error=account_deactivated", request.url));
+    return NextResponse.redirect(
+      new URL("/auth/login?error=account_deactivated", request.url)
+    );
   }
 
   // ── 4. Cross-role route blocking ──
@@ -162,11 +167,11 @@ export async function middleware(request: NextRequest) {
   const allowedPrefix = ROLE_ROUTE_MAP[userRole];
 
   if (!allowedPrefix) {
-    // Unknown role
-    return NextResponse.redirect(new URL("/auth/login?error=invalid_role", request.url));
+    return NextResponse.redirect(
+      new URL("/auth/login?error=invalid_role", request.url)
+    );
   }
 
-  // Check if the current path matches the user's allowed route prefix
   const isAccessingOwnPanel = pathname.startsWith(allowedPrefix);
 
   if (!isAccessingOwnPanel) {
@@ -188,13 +193,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization)
-     * - favicon.ico
-     * - public files (images, etc.)
-     */
-    "/((?!_next/static|_next/image|favicon.ico|.*\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
