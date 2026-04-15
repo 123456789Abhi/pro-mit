@@ -338,10 +338,12 @@ Call log:
   355 |     await loginAsSuperAdmin(page);
   356 |     await page.goto("/super-admin/operations");
   357 | 
-  358 |     // Navigate to Admin Accounts
-  359 |     await page.click('text=Admin Accounts');
-  360 |     await expect(page.locator("text=Admin Accounts")).toBeVisible();
-  361 |   });
-  362 | });
-  363 | 
+  358 |     // Navigate to Admin Accounts tab
+  359 |     await page.getByRole('button', { name: 'Admin Accounts' }).click();
+  360 | 
+  361 |     // Verify the Admins tab content loaded
+  362 |     await expect(page.getByText("Add Admin")).toBeVisible({ timeout: 10000 });
+  363 |   });
+  364 | });
+  365 | 
 ```

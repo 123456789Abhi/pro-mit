@@ -14,22 +14,21 @@
 ```
 Error: expect(locator).toBeVisible() failed
 
-Locator: locator('text=Admin Accounts')
+Locator: getByText('Add Admin')
 Expected: visible
-Error: strict mode violation: locator('text=Admin Accounts') resolved to 2 elements:
-    1) <p class="mt-1 text-sm text-text-secondary">Monitor system health, manage admin accounts, and…</p> aka getByText('Monitor system health, manage')
-    2) <button class="btn-touch flex items-center gap-2 whitespace-nowrap border-b-2 px-4 py-3 text-sm font-medium transition-colors border-transparent text-text-muted hover:border-border hover:text-text-primary">…</button> aka getByRole('button', { name: 'Admin Accounts' })
+Timeout: 10000ms
+Error: element(s) not found
 
 Call log:
-  - Expect "toBeVisible" with timeout 5000ms
-  - waiting for locator('text=Admin Accounts')
+  - Expect "toBeVisible" with timeout 10000ms
+  - waiting for getByText('Add Admin')
 
 ```
 
 # Page snapshot
 
 ```yaml
-- generic [active] [ref=e1]:
+- generic [ref=e1]:
   - generic [ref=e2]:
     - complementary [ref=e3]:
       - link "L Lernen Super Admin" [ref=e5] [cursor=pointer]:
@@ -80,26 +79,24 @@ Call log:
           - button "Activity Audit Log" [ref=e63] [cursor=pointer]:
             - img [ref=e64]
             - text: Activity Audit Log
-          - button "Admin Accounts" [ref=e67] [cursor=pointer]:
+          - button "Admin Accounts" [active] [ref=e67] [cursor=pointer]:
             - img [ref=e68]
             - text: Admin Accounts
           - button "System Health" [ref=e73] [cursor=pointer]:
             - img [ref=e74]
             - text: System Health
   - region "Notifications alt+T"
-  - alert [ref=e106]
-  - generic [ref=e109] [cursor=pointer]:
-    - img [ref=e110]
-    - generic [ref=e112]: 1 error
-    - button "Hide Errors" [ref=e113]:
-      - img [ref=e114]
+  - alert [ref=e96]
+  - generic [ref=e99] [cursor=pointer]:
+    - img [ref=e100]
+    - generic [ref=e102]: 1 error
+    - button "Hide Errors" [ref=e103]:
+      - img [ref=e104]
 ```
 
 # Test source
 
 ```ts
-  260 |     await page.click('button:has-text("Compose")');
-  261 | 
   262 |     // Enable scheduling
   263 |     await page.click('text=Schedule');
   264 | 
@@ -196,11 +193,13 @@ Call log:
   355 |     await loginAsSuperAdmin(page);
   356 |     await page.goto("/super-admin/operations");
   357 | 
-  358 |     // Navigate to Admin Accounts
-  359 |     await page.click('text=Admin Accounts');
-> 360 |     await expect(page.locator("text=Admin Accounts")).toBeVisible();
-      |                                                       ^ Error: expect(locator).toBeVisible() failed
-  361 |   });
-  362 | });
-  363 | 
+  358 |     // Navigate to Admin Accounts tab
+  359 |     await page.getByRole('button', { name: 'Admin Accounts' }).click();
+  360 | 
+  361 |     // Verify the Admins tab content loaded
+> 362 |     await expect(page.getByText("Add Admin")).toBeVisible({ timeout: 10000 });
+      |                                               ^ Error: expect(locator).toBeVisible() failed
+  363 |   });
+  364 | });
+  365 | 
 ```

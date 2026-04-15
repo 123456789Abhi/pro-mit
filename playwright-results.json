@@ -128,7 +128,7 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "timedOut",
-                      "duration": 40805,
+                      "duration": 42116,
                       "error": {
                         "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
                         "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
@@ -149,7 +149,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:16:19.221Z",
+                      "startTime": "2026-04-15T11:40:46.875Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -194,7 +194,7 @@
                       "workerIndex": 1,
                       "parallelIndex": 1,
                       "status": "timedOut",
-                      "duration": 40303,
+                      "duration": 41593,
                       "error": {
                         "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
                         "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
@@ -215,7 +215,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:16:19.035Z",
+                      "startTime": "2026-04-15T11:40:46.759Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -260,7 +260,7 @@
                       "workerIndex": 2,
                       "parallelIndex": 1,
                       "status": "timedOut",
-                      "duration": 39698,
+                      "duration": 38265,
                       "error": {
                         "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
                         "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
@@ -281,7 +281,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:17:12.648Z",
+                      "startTime": "2026-04-15T11:41:57.760Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -326,7 +326,7 @@
                       "workerIndex": 3,
                       "parallelIndex": 0,
                       "status": "timedOut",
-                      "duration": 40636,
+                      "duration": 34558,
                       "error": {
                         "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
                         "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
@@ -347,7 +347,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:17:13.010Z",
+                      "startTime": "2026-04-15T11:42:12.110Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -392,12 +392,12 @@
                       "workerIndex": 4,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 8274,
+                      "duration": 8571,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:18:06.025Z",
+                      "startTime": "2026-04-15T11:42:57.995Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -426,7 +426,7 @@
                       "workerIndex": 5,
                       "parallelIndex": 0,
                       "status": "timedOut",
-                      "duration": 41043,
+                      "duration": 42488,
                       "error": {
                         "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
                         "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
@@ -447,7 +447,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:18:08.474Z",
+                      "startTime": "2026-04-15T11:43:13.261Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -492,7 +492,7 @@
                       "workerIndex": 4,
                       "parallelIndex": 1,
                       "status": "timedOut",
-                      "duration": 42455,
+                      "duration": 44240,
                       "error": {
                         "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
                         "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
@@ -513,7 +513,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:18:16.813Z",
+                      "startTime": "2026-04-15T11:43:07.630Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -558,31 +558,28 @@
                       "workerIndex": 6,
                       "parallelIndex": 0,
                       "status": "timedOut",
-                      "duration": 43209,
+                      "duration": 39770,
                       "error": {
-                        "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:9:8",
-                        "location": {
-                          "file": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts",
-                          "column": 8,
-                          "line": 9
-                        },
-                        "snippet": "\u001b[0m \u001b[90m  7 |\u001b[39m\n \u001b[90m  8 |\u001b[39m test\u001b[33m.\u001b[39mdescribe(\u001b[32m\"Schools Management\"\u001b[39m\u001b[33m,\u001b[39m () \u001b[33m=>\u001b[39m {\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m  9 |\u001b[39m   test\u001b[33m.\u001b[39mbeforeEach(\u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\n \u001b[90m    |\u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 10 |\u001b[39m     \u001b[36mawait\u001b[39m loginAsSuperAdmin(page)\u001b[33m;\u001b[39m\n \u001b[90m 11 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/super-admin/schools\"\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 12 |\u001b[39m   })\u001b[33m;\u001b[39m\u001b[0m"
+                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
+                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
                       },
                       "errors": [
                         {
+                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        },
+                        {
                           "location": {
                             "file": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts",
-                            "column": 8,
-                            "line": 9
+                            "column": 65,
+                            "line": 181
                           },
-                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n   7 |\n   8 | test.describe(\"Schools Management\", () => {\n>  9 |   test.beforeEach(async ({ page }) => {\n     |        ^\n  10 |     await loginAsSuperAdmin(page);\n  11 |     await page.goto(\"/super-admin/schools\");\n  12 |   });\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:9:8"
+                          "message": "Error: locator.click: Test timeout of 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('tbody tr').first().locator('a').first()\u001b[22m\n\n\n  179 |\n  180 |     // Click first school's view details\n> 181 |     await page.locator(\"tbody tr\").first().locator(\"a\").first().click();\n      |                                                                 ^\n  182 |\n  183 |     // Verify Overview tab loads\n  184 |     await page.waitForSelector('text=Overview', { timeout: 5000 });\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:181:65"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:19:14.577Z",
+                      "startTime": "2026-04-15T11:44:29.733Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -600,12 +597,7 @@
                           "contentType": "text/markdown",
                           "path": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\test-results\\super-admin-functional-sch-cac80-8---School-details-overview-chromium\\error-context.md"
                         }
-                      ],
-                      "errorLocation": {
-                        "file": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts",
-                        "column": 8,
-                        "line": 9
-                      }
+                      ]
                     }
                   ],
                   "status": "unexpected"
@@ -639,16 +631,19 @@
                     {
                       "workerIndex": 7,
                       "parallelIndex": 1,
-                      "status": "timedOut",
-                      "duration": 35201,
+                      "status": "failed",
+                      "duration": 13137,
                       "error": {
-                        "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
-                        "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Processing').or(locator('text=Uploaded'))\nExpected: visible\nError: strict mode violation: locator('text=Processing').or(locator('text=Uploaded')) resolved to 3 elements:\n    1) <p class=\"text-sm text-text-secondary\">Manage master books, processing, pre-generation, …</p> aka getByText('Manage master books,')\n    2) <span class=\"hidden sm:inline\">Processing Queue</span> aka getByRole('button', { name: 'Processing Queue' })\n    3) <h3 class=\"font-medium text-text-primary\">Processing Pipeline</h3> aka getByRole('heading', { name: 'Processing Pipeline' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Processing').or(locator('text=Uploaded'))\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Processing').or(locator('text=Uploaded'))\nExpected: visible\nError: strict mode violation: locator('text=Processing').or(locator('text=Uploaded')) resolved to 3 elements:\n    1) <p class=\"text-sm text-text-secondary\">Manage master books, processing, pre-generation, …</p> aka getByText('Manage master books,')\n    2) <span class=\"hidden sm:inline\">Processing Queue</span> aka getByRole('button', { name: 'Processing Queue' })\n    3) <h3 class=\"font-medium text-text-primary\">Processing Pipeline</h3> aka getByRole('heading', { name: 'Processing Pipeline' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Processing').or(locator('text=Uploaded'))\u001b[22m\n\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:206:85",
+                        "location": {
+                          "file": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts",
+                          "column": 85,
+                          "line": 206
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 204 |\u001b[39m\n \u001b[90m 205 |\u001b[39m     \u001b[90m// Verify upload started\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 206 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m\"text=Processing\"\u001b[39m)\u001b[33m.\u001b[39mor(page\u001b[33m.\u001b[39mlocator(\u001b[32m\"text=Uploaded\"\u001b[39m)))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m5000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                                                     \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 207 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 208 |\u001b[39m\n \u001b[90m 209 |\u001b[39m   test(\u001b[32m\"1.10 - Pre-generation trigger\"\u001b[39m\u001b[33m,\u001b[39m \u001b[36masync\u001b[39m ({ page }) \u001b[33m=>\u001b[39m {\u001b[0m"
                       },
                       "errors": [
-                        {
-                          "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
-                        },
                         {
                           "location": {
                             "file": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts",
@@ -661,7 +656,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:19:22.099Z",
+                      "startTime": "2026-04-15T11:44:31.373Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -679,7 +674,12 @@
                           "contentType": "text/markdown",
                           "path": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\test-results\\super-admin-functional-sch-b2085-line-1-9---Book-upload-flow-chromium\\error-context.md"
                         }
-                      ]
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts",
+                        "column": 85,
+                        "line": 206
+                      }
                     }
                   ],
                   "status": "unexpected"
@@ -706,12 +706,12 @@
                       "workerIndex": 8,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 8898,
+                      "duration": 18265,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:20:17.266Z",
+                      "startTime": "2026-04-15T11:45:18.374Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -748,7 +748,7 @@
                       "workerIndex": 9,
                       "parallelIndex": 0,
                       "status": "timedOut",
-                      "duration": 35583,
+                      "duration": 40528,
                       "error": {
                         "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
                         "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
@@ -769,7 +769,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:20:16.913Z",
+                      "startTime": "2026-04-15T11:45:43.808Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -814,7 +814,7 @@
                       "workerIndex": 8,
                       "parallelIndex": 1,
                       "status": "timedOut",
-                      "duration": 37148,
+                      "duration": 40814,
                       "error": {
                         "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
                         "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
@@ -835,7 +835,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:20:26.795Z",
+                      "startTime": "2026-04-15T11:45:40.269Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -880,7 +880,7 @@
                       "workerIndex": 10,
                       "parallelIndex": 1,
                       "status": "timedOut",
-                      "duration": 38502,
+                      "duration": 38984,
                       "error": {
                         "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
                         "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
@@ -901,7 +901,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:21:17.891Z",
+                      "startTime": "2026-04-15T11:46:50.047Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -954,7 +954,7 @@
                       "workerIndex": 11,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 14097,
+                      "duration": 24799,
                       "error": {
                         "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Revenue Overview')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Revenue Overview')\u001b[22m\n",
                         "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Revenue Overview')\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Revenue Overview')\u001b[22m\n\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:304:57",
@@ -978,7 +978,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:21:18.987Z",
+                      "startTime": "2026-04-15T11:46:54.382Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1028,7 +1028,7 @@
                       "workerIndex": 12,
                       "parallelIndex": 0,
                       "status": "timedOut",
-                      "duration": 37838,
+                      "duration": 37245,
                       "error": {
                         "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
                         "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
@@ -1049,7 +1049,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:21:53.194Z",
+                      "startTime": "2026-04-15T11:47:40.282Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1094,7 +1094,7 @@
                       "workerIndex": 13,
                       "parallelIndex": 1,
                       "status": "timedOut",
-                      "duration": 39553,
+                      "duration": 41008,
                       "error": {
                         "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
                         "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
@@ -1115,7 +1115,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:22:10.702Z",
+                      "startTime": "2026-04-15T11:47:58.870Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1160,7 +1160,7 @@
                       "workerIndex": 14,
                       "parallelIndex": 0,
                       "status": "timedOut",
-                      "duration": 42539,
+                      "duration": 45853,
                       "error": {
                         "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m",
                         "stack": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
@@ -1181,7 +1181,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:22:37.736Z",
+                      "startTime": "2026-04-15T11:49:02.125Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1234,12 +1234,12 @@
                       "workerIndex": 15,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 12846,
+                      "duration": 10030,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:23:03.589Z",
+                      "startTime": "2026-04-15T11:49:11.467Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1268,12 +1268,12 @@
                       "workerIndex": 15,
                       "parallelIndex": 1,
                       "status": "passed",
-                      "duration": 12610,
+                      "duration": 10297,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:23:17.390Z",
+                      "startTime": "2026-04-15T11:49:22.632Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1302,31 +1302,31 @@
                       "workerIndex": 15,
                       "parallelIndex": 1,
                       "status": "failed",
-                      "duration": 10848,
+                      "duration": 26373,
                       "error": {
-                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Admin Accounts')\nExpected: visible\nError: strict mode violation: locator('text=Admin Accounts') resolved to 2 elements:\n    1) <p class=\"mt-1 text-sm text-text-secondary\">Monitor system health, manage admin accounts, and…</p> aka getByText('Monitor system health, manage')\n    2) <button class=\"btn-touch flex items-center gap-2 whitespace-nowrap border-b-2 px-4 py-3 text-sm font-medium transition-colors border-transparent text-text-muted hover:border-border hover:text-text-primary\">…</button> aka getByRole('button', { name: 'Admin Accounts' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Admin Accounts')\u001b[22m\n",
-                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Admin Accounts')\nExpected: visible\nError: strict mode violation: locator('text=Admin Accounts') resolved to 2 elements:\n    1) <p class=\"mt-1 text-sm text-text-secondary\">Monitor system health, manage admin accounts, and…</p> aka getByText('Monitor system health, manage')\n    2) <button class=\"btn-touch flex items-center gap-2 whitespace-nowrap border-b-2 px-4 py-3 text-sm font-medium transition-colors border-transparent text-text-muted hover:border-border hover:text-text-primary\">…</button> aka getByRole('button', { name: 'Admin Accounts' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Admin Accounts')\u001b[22m\n\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:360:55",
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Add Admin')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Add Admin')\u001b[22m\n",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Add Admin')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Add Admin')\u001b[22m\n\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:362:47",
                         "location": {
                           "file": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts",
-                          "column": 55,
-                          "line": 360
+                          "column": 47,
+                          "line": 362
                         },
-                        "snippet": "\u001b[0m \u001b[90m 358 |\u001b[39m     \u001b[90m// Navigate to Admin Accounts\u001b[39m\n \u001b[90m 359 |\u001b[39m     \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mclick(\u001b[32m'text=Admin Accounts'\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 360 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mlocator(\u001b[32m\"text=Admin Accounts\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                       \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 361 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 362 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 363 |\u001b[39m\u001b[0m"
+                        "snippet": "\u001b[0m \u001b[90m 360 |\u001b[39m\n \u001b[90m 361 |\u001b[39m     \u001b[90m// Verify the Admins tab content loaded\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 362 |\u001b[39m     \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByText(\u001b[32m\"Add Admin\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible({ timeout\u001b[33m:\u001b[39m \u001b[35m10000\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 363 |\u001b[39m   })\u001b[33m;\u001b[39m\n \u001b[90m 364 |\u001b[39m })\u001b[33m;\u001b[39m\n \u001b[90m 365 |\u001b[39m\u001b[0m"
                       },
                       "errors": [
                         {
                           "location": {
                             "file": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts",
-                            "column": 55,
-                            "line": 360
+                            "column": 47,
+                            "line": 362
                           },
-                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: locator('text=Admin Accounts')\nExpected: visible\nError: strict mode violation: locator('text=Admin Accounts') resolved to 2 elements:\n    1) <p class=\"mt-1 text-sm text-text-secondary\">Monitor system health, manage admin accounts, and…</p> aka getByText('Monitor system health, manage')\n    2) <button class=\"btn-touch flex items-center gap-2 whitespace-nowrap border-b-2 px-4 py-3 text-sm font-medium transition-colors border-transparent text-text-muted hover:border-border hover:text-text-primary\">…</button> aka getByRole('button', { name: 'Admin Accounts' })\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for locator('text=Admin Accounts')\u001b[22m\n\n\n  358 |     // Navigate to Admin Accounts\n  359 |     await page.click('text=Admin Accounts');\n> 360 |     await expect(page.locator(\"text=Admin Accounts\")).toBeVisible();\n      |                                                       ^\n  361 |   });\n  362 | });\n  363 |\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:360:55"
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByText('Add Admin')\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 10000ms\u001b[22m\n\u001b[2m  - waiting for getByText('Add Admin')\u001b[22m\n\n\n  360 |\n  361 |     // Verify the Admins tab content loaded\n> 362 |     await expect(page.getByText(\"Add Admin\")).toBeVisible({ timeout: 10000 });\n      |                                               ^\n  363 |   });\n  364 | });\n  365 |\n    at C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts:362:47"
                         }
                       ],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-04-15T11:23:30.160Z",
+                      "startTime": "2026-04-15T11:49:33.055Z",
                       "annotations": [],
                       "attachments": [
                         {
@@ -1347,8 +1347,8 @@
                       ],
                       "errorLocation": {
                         "file": "C:\\Users\\Abhi\\OneDrive\\Desktop\\mitosh\\pro-mit\\tests\\super-admin\\functional\\schools.spec.ts",
-                        "column": 55,
-                        "line": 360
+                        "column": 47,
+                        "line": 362
                       }
                     }
                   ],
@@ -1367,8 +1367,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-04-15T11:16:14.487Z",
-    "duration": 458887.979,
+    "startTime": "2026-04-15T11:40:40.791Z",
+    "duration": 576266.672,
     "expected": 4,
     "skipped": 0,
     "unexpected": 16,

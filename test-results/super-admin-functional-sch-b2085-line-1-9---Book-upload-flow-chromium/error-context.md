@@ -12,10 +12,6 @@
 # Error details
 
 ```
-Test timeout of 30000ms exceeded.
-```
-
-```
 Error: expect(locator).toBeVisible() failed
 
 Locator: locator('text=Processing').or(locator('text=Uploaded'))
@@ -147,7 +143,7 @@ Call log:
                   - img [ref=e116]
             - generic [ref=e120]:
               - button "Upload Book" [disabled] [ref=e121]
-              - paragraph [ref=e122]: "Queue position: #4"
+              - paragraph [ref=e122]: "Queue position: #6"
           - generic [ref=e123]:
             - heading "Processing Pipeline" [level=3] [ref=e124]
             - generic [ref=e125]:
